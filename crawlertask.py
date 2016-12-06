@@ -35,6 +35,10 @@ if __name__ == "__main__":
     for website in config.proxysource:
         for item in crawlercore.ruletowebsite(website):
             result = crawlercore.getStaticHtml(item)
-            ips = crawlercore.getIPfromPage(result)
+
+            ips = crawlercore.getIPfromPage(result,portrule=website[4])
             print ips
             print len(ips)
+
+# __cfduid=dff31348dc917e11686bea84826aaa2041480994843; Hm_lvt_1761fabf3c988e7f04bec51acd4073f4=1480994463; Hm_lpvt_1761fabf3c988e7f04bec51acd4073f4=1481006102; CNZZDATA1253901093=1597796917-1480989095-http%253A%252F%252Fwww.66ip.cn%252F%7C1480991790; cf_clearance=061b6886dd44da722fc3e842bf666eb4c9ef5b6a-1481005891-300
+# __cfduid=dff31348dc917e11686bea84826aaa2041480994843; Hm_lvt_1761fabf3c988e7f04bec51acd4073f4=1480994463; Hm_lpvt_1761fabf3c988e7f04bec51acd4073f4=1481006082; CNZZDATA1253901093=1597796917-1480989095-http%253A%252F%252Fwww.66ip.cn%252F%7C1480991790; cf_clearance=061b6886dd44da722fc3e842bf666eb4c9ef5b6a-1481005891-300

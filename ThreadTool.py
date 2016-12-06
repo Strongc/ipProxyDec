@@ -11,8 +11,8 @@ import datetime
 import multiprocessing
 
 import gevent
-import gevent.monkey
-# gevent.monkey.patch_socket()
+from gevent import monkey
+monkey.patch_all()
 stack_size(32768*16)
 class ThreadTool:
 	def __init__(self,isThread=1,needfinishqueue=0,deamon=True):

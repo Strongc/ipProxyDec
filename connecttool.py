@@ -28,7 +28,8 @@ class ConnectTool:
 		urllib2.socket.setdefaulttimeout(WEBCONFIG.time_out)                                    #设置超时时间
 		self.__headers = { 
 			'User-Agent' :		 WEBCONFIG.useragent,
-			'Referer':		 WEBCONFIG.Referer
+			# 'Referer':		 WEBCONFIG.Referer
+
 			 }
 
 		self.__cookie=cookielib.CookieJar()
@@ -42,7 +43,8 @@ class ConnectTool:
 		else:
 			self.__opener=urllib2.build_opener(self.__encoding_support,self.__httpcookieprocessor,self.__null_proxy_handler,self.__httpHandler,self.__httpsHandler,self.__RedirectHandler)
 		urllib2.install_opener(self.__opener)
-
+	def setHeader(self,name,value):
+		self.__headers[name]=value
 	def  getHTML(self,URL,way='GET',params={},times=1,header=None,type=''):
 
 		data=None
@@ -60,6 +62,7 @@ class ConnectTool:
 
 
 		elif len(params)==0:
+			print 'headers',header
 			req= urllib2.Request(url,headers=header)
 
 
@@ -74,10 +77,10 @@ class ConnectTool:
 			response = urllib2.urlopen(req,context=context)
 
 			temp=str(response.info())
-# 			print 'cooke信息如下：'
-# 			for item in self.__cookie:
-# 				print 'Name = '+item.name
-# 				print 'Value = '+item.value
+			# print 'cooke信息如下：'
+			# for item in self.__cookie:
+			# 	print 'Name = '+item.name
+			# 	print 'Value = '+item.value
 			msg=response.read()
 			
 			chardit1 = chardet.detect(msg)
@@ -102,14 +105,15 @@ class ConnectTool:
 			except Exception,e:
 				msgg= '错误码为: %s' % str(e)
 			print msgg
-			if times <4:
+			if times <2:
 				print str(url)+'   尝试第'+str(times)+'次'
 				time.sleep(3)
 				return self.getHTML(URL, way, params, times+1)
+
 			else :
 				print str(url)+'  失败次数过多，停止链接'
 				the_page= msgg
-				return '',the_page
+				return 'err',the_page
 		finally:
 				if response:
 					response.close()

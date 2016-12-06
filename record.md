@@ -160,9 +160,26 @@
 检测脚本 socks-open-proxy 
 	      http-open-proxy		
 测试用例: <pre>nmap -v -sS -p 1080 --script socks-open-proxy 192.168.0.1/24</pre>
-
-
-
+常见的判断ip的报文信息
+                        'CLIENT_IP', 
+                        'FORWARDED', 
+                          'FORWARDED_FOR', 
+                          'FORWARDED_FOR_IP', 
+                          'HTTP_CLIENT_IP', 
+                          'HTTP_FORWARDED', 
+                          'HTTP_FORWARDED_FOR', 
+                          'HTTP_FORWARDED_FOR_IP', 
+                          'HTTP_PC_REMOTE_ADDR', 
+                          'HTTP_PROXY_CONNECTION',
+                          'HTTP_VIA', 
+                          'HTTP_X_FORWARDED', 
+                          'HTTP_X_FORWARDED_FOR', 
+                          'HTTP_X_FORWARDED_FOR_IP', 
+                          'HTTP_X_IMFORWARDS', 
+                          'HTTP_XROXY_CONNECTION', 
+                          'VIA', 
+                          'X_FORWARDED', 
+                          'X_FORWARDED_FOR'
 
 
 

@@ -14,7 +14,7 @@ def getObject():
 	return connectpoolinstance
 class ConnectPool:
 
-	def __init__(self,poolsize=10,logger=None):
+	def __init__(self,poolsize=1000,logger=None):
 		self.__connect_pool = Queue.Queue(maxsize=poolsize) 		#连接池
 		self.connectTool=connecttool.ConnectTool()
 		self.logger = logger
@@ -40,6 +40,14 @@ class ConnectPool:
 				print '页面被劫持,重新访问'
 			else:
 				break
+		if head=='err':
+			import browsertool
+			browser=browsertool.Browser()
+			browser.get(path=URL,timewait=5)
+			cookie=browser.getcookie()
+			self.connectTool.setHeader('Cookie',cookie)
+			page=browser.getpage()
+
 
 
 
