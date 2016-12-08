@@ -12,7 +12,7 @@ socket_timeout = 30
 
 # Check proxy
 def check_http_proxy(protocol, pip):
-
+    proxy_detected=False
     try:
         proxy_handler = urllib2.ProxyHandler({protocol:pip})
         opener = urllib2.build_opener(proxy_handler)
@@ -29,7 +29,7 @@ def check_http_proxy(protocol, pip):
         print result
         # print detected_pip
         proxy_detected = True
-
+        return True
     except urllib2.HTTPError, e:
         print "ERROR: Code ", e.code
         return False
@@ -82,7 +82,7 @@ def socket_check(potocol,ip,port):
     socket.socket = socks.socksocket
     import urllib2
 
-    req = urllib2.Request('http://www.baidu.com/')
+    req = urllib2.Request(ip_check_url)
     req.get_method = lambda: 'HEAD'
     time_start = time.time()
     try:

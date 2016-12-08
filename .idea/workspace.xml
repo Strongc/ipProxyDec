@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ce0fe16-6a91-429f-9aad-86e67b369e08" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/9011" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/checkproxy.py" afterPath="$PROJECT_DIR$/checkproxy.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/crawlercore.py" afterPath="$PROJECT_DIR$/crawlercore.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ocrtool.py" afterPath="$PROJECT_DIR$/ocrtool.py" />
     </list>
     <ignored path="ipProxyDec.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,8 +45,8 @@
       <file leaf-file-name="checkproxy.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/checkproxy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="48" column="41" selection-start-line="48" selection-start-column="41" selection-end-line="48" selection-end-column="41" />
+            <state relative-caret-position="197">
+              <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
               <folding>
                 <element signature="e#33#47#0" expanded="true" />
               </folding>
@@ -155,8 +151,8 @@
         <option value="$PROJECT_DIR$/config.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/ocrtool.py" />
-        <option value="$PROJECT_DIR$/checkproxy.py" />
         <option value="$PROJECT_DIR$/crawlercore.py" />
+        <option value="$PROJECT_DIR$/checkproxy.py" />
       </list>
     </option>
   </component>
@@ -904,8 +900,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/checkproxy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="48" column="41" selection-start-line="48" selection-start-column="41" selection-end-line="48" selection-end-column="41" />
+        <state relative-caret-position="197">
+          <caret line="94" column="20" selection-start-line="94" selection-start-column="20" selection-end-line="94" selection-end-column="20" />
           <folding>
             <element signature="e#33#47#0" expanded="true" />
           </folding>
