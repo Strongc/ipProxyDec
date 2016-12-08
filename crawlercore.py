@@ -4,7 +4,7 @@
 import connecttool
 import re
 import config
-import connectpool,ocrtool
+import connectpool,ocrtool,checkproxy
 def getfullcode(path='http://ip.zdaye.com/'):
     from selenium import webdriver
     driver = webdriver.PhantomJS()
@@ -27,7 +27,7 @@ def getIPfromPage(page,rules=None):
     iplist=set()
     ips=reip.findall(page)
     for ip in ips:
-        port='80'
+        port=None
         if portrule=='':
             pass
         else:
@@ -58,7 +58,10 @@ def getIPfromPage(page,rules=None):
 
 
         print ip,port
-        iplist.add((ip,port))
+
+        listary=checkproxy.check(rules[5],ip,port)
+        for i in listary:
+            iplist.add(i)
 
 
     return iplist

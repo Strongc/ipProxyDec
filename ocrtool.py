@@ -202,16 +202,13 @@ def getverifyimg(name, path=None):
 import time
 
 if __name__ == "__main__":
-    import urllib
 
-    # url='http://www.pythontab.com/statics/images/common/logo.png'
-    # download_file(url=url)
 
-    # start_time = time.time()
-    #
-    # getverifyimg('1234.png')
-    #
-    # print 'training took %fs!' % (time.time() - start_time)
+    start_time = time.time()
+
+    getverifyimg('9011')
+
+    print 'training took %fs!' % (time.time() - start_time)
 
 
 
