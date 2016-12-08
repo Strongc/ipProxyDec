@@ -12,42 +12,42 @@ socket_timeout = 30
 
 # Check proxy
 def check_proxy(protocol, pip):
-  try:
-    proxy_handler = urllib2.ProxyHandler({protocol:pip})
-    opener = urllib2.build_opener(proxy_handler)
-    # opener.addheaders = [('User-agent', user_agent)] #这句加上以后无法正常检测，不知道是什么原因。
-    urllib2.install_opener(opener)
+    try:
+        proxy_handler = urllib2.ProxyHandler({protocol:pip})
+        opener = urllib2.build_opener(proxy_handler)
 
-    req = urllib2.Request(ip_check_url)
-    time_start = time.time()
-    conn = urllib2.urlopen(req)
-    # conn = urllib2.urlopen(ip_check_url)
-    time_end = time.time()
-    detected_pip = conn.read()
+        urllib2.install_opener(opener)
 
-    proxy_detected = True
+        req = urllib2.Request(ip_check_url)
+        time_start = time.time()
+        conn = urllib2.urlopen(req)
+        # conn = urllib2.urlopen(ip_check_url)
+        time_end = time.time()
+        detected_pip = conn.read()
 
-  except urllib2.HTTPError, e:
-    print "ERROR: Code ", e.code
-    return False
-  except Exception, detail:
-    print "ERROR: ", detail
-    return False
+        proxy_detected = True
 
-  return proxy_detected
+    except urllib2.HTTPError, e:
+        print "ERROR: Code ", e.code
+        return False
+    except Exception, detail:
+        print "ERROR: ", detail
+        return False
+
+    return proxy_detected
 
 def main():
-  socket.setdefaulttimeout(socket_timeout)
 
-  print
+    socket.setdefaulttimeout(socket_timeout)
 
-  protocol = "http"
-  current_proxy = "88.250.131.51:8080"
-  proxy_detected = check_proxy(protocol, current_proxy)
-  if proxy_detected:
-    print (" WORKING: " + current_proxy)
-  else:
-    print " FAILED: %s " % ( current_proxy, )
+
+    protocol = "http"
+    current_proxy = "88.250.131.51:8080"
+    proxy_detected = check_proxy(protocol, current_proxy)
+    if proxy_detected:
+        print (" WORKING: " + current_proxy)
+    else:
+        print " FAILED: %s " % ( current_proxy, )
 
 if __name__ == '__main__':
   main()
