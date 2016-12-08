@@ -4,7 +4,7 @@
 import connecttool
 import re
 import config
-import connectpool
+import connectpool,ocrtool
 def getfullcode(path='http://ip.zdaye.com/'):
     from selenium import webdriver
     driver = webdriver.PhantomJS()
@@ -14,8 +14,8 @@ def getfullcode(path='http://ip.zdaye.com/'):
     return result
 
 def getIPfromPage(page,rules=None):
-    # import copy
-    # htmlcode= copy.deepcopy(page)
+    isgettoken=False
+    token=None
     if rules[3]=='':
         rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])'
     else:
@@ -34,12 +34,10 @@ def getIPfromPage(page,rules=None):
 
             prule=portrule % (ip)
 
-            print prule
-            print page
-
-
-
+            # template=re.compile(prule)
+            # port =template.findall(page)
             port=re.search(prule, page).groups()[0]
+
             # report= re.compile(prule)
             # print prule
             # print report
@@ -48,11 +46,16 @@ def getIPfromPage(page,rules=None):
             # port=report.findall(page)[0]
             if porttype == '1':
                 picurl=port
-                print port
-
                 port_picrule=rules[7]
-                if port_picrule!='':
-                    pass
+                if port_picrule!='' and isgettoken==False:
+                    token = re.search(port_picrule, page).groups()[0]
+                    isgettoken=True
+                    print 'token',token
+
+                data=getStaticHtml(picurl,token)
+                picpath=ocrtool.downloadFile(data=data, name=None, type=None, url=picurl)
+                port=ocrtool.getverifyimg(name=picpath)
+
 
         print ip,port
         iplist.add((ip,port))
@@ -60,10 +63,14 @@ def getIPfromPage(page,rules=None):
 
     return iplist
 
-def getStaticHtml(path):
+def getStaticHtml(path,cookie=None):
     conpool=connectpool.getObject()
     print path
-    head,result=conpool.getConnect(URL=path)
+    if cookie is not None:
+        conpool.setHeader('Cookie',cookie)
+        head, result = conpool.getConnect(URL=path)
+    else:
+        head,result=conpool.getConnect(URL=path)
     return result
 
 
@@ -159,7 +166,7 @@ texto="""
                 <h1>免费代理</h1>
                 <p>免费代理都是通过扫描网络上的公共代理得来，由于没有用户名和密码认证，用的人特别多，故称“万人骑”，因此在速度和稳定性上都没有保障</p>
 				<p>本站免费代理均可免费查询使用，免费代理本身并不收费，但是如果您需要API批量获取接口，请购买API接口服务，<u>注意：通过API接口获取到的代理IP的质量与在线查询的一样</u></p>
-                <p>实时扫描免费代理数量：<strong class="fz20">48761</strong></p>
+                <p>实时扫描免费代理数量：<strong class="fz20">48823</strong></p>
             </div>
         </div>
         <div class="container">
@@ -184,15 +191,15 @@ texto="""
                     	<p class="nav-title-sm">按端口选择</p>
                     	<div class="p5">
 	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8081">8081</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8099">8099</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8808">8808</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8909">8909</a>
 	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/9100">9100</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/23">23</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1453">1453</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1518">1518</a>
 	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/3127">3127</a>
 	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8008">8008</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8085">8085</a>
-	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8808">8808</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1234">1234</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8082">8082</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/6789">6789</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1080">1080</a>
 							</br>
                     		<a class="free-tags" href="http://www.mayidaili.com/free/fiveport">随机五位端口</a>
                     	</div>
@@ -252,62 +259,10 @@ texto="""
                     </thead>
                     <tbody>
                         <tr>
-                            <td>122.72.32.82
+                            <td>111.62.251.17
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/49284/wsREIP3Xx0-c5J7Qx6egJA" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/中国,重庆市-3-1814905">重庆市</a>
-
-
-							</td>
-                            <td>
-                                <span class="label label-success">131</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>222.187.32.174
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/21979/L9zUyjxPvfThHLWA5L_ULQ" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省,徐州市-4-1787823">徐州市</a>
-
-							</td>
-                            <td>
-                                <span class="label label-success">71</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>61.157.126.45
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/61664/AyLxLclBXtxgUTQ9jK-3-Q" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/51402/TI3fYPdCR3wMQTSpF5Clqw" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -317,12 +272,12 @@ texto="""
                                     <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
                             </td>
                             <td>
-									<a href="http://www.mayidaili.com/free/location/中国,四川省-3-1794299">四川省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,四川省,成都市-4-1815285">成都市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,河北省-3-1808773">河北省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,河北省,保定市-4-1816969">保定市</a>
 
 							</td>
                             <td>
-                                <span class="label label-success">114</span>
+                                <span class="label label-success">26</span>
                                 ms
 							</td>
                             <td>
@@ -330,10 +285,10 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>121.201.31.9
+                            <td>61.179.105.11
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/29858/FsoSw0CEFGbq6Tk9HfLF4g" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/39089/F2nfYnCI3OTYLdmslXOZOg" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -343,12 +298,12 @@ texto="""
                                     <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
                             </td>
                             <td>
-									<a href="http://www.mayidaili.com/free/location/中国,广东省-3-1809935">广东省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,广东省,中山市-4-1784313">中山市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,山东省-3-1796328">山东省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,山东省,烟台市-4-1787083">烟台市</a>
 
 							</td>
                             <td>
-                                <span class="label label-success">91</span>
+                                <span class="label label-success">52</span>
                                 ms
 							</td>
                             <td>
@@ -356,140 +311,10 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>112.25.33.26
+                            <td>113.18.193.13
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/8113/SnOeWAtg45plImMrohAL7w" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省,南京市-4-1799960">南京市</a>
-
-							</td>
-                            <td>
-                                <span class="label label-success">62</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>36.80.34.225
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/52901/in6kjNZBnyZFaLaLGqlmjQ" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/ID.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/印度尼西亚-2-1643084">印度尼西亚</a>
-                            </td>
-                            <td>
-
-
-
-							</td>
-                            <td>
-                                <span class="label label-warning">1076</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>112.90.147.142
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/56774/X4XQi_NSU-iPTeAClnHFvA" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/中国,广东省-3-1809935">广东省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,广东省,珠海市-4-1783950">珠海市</a>
-
-							</td>
-                            <td>
-                                <span class="label label-success">83</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>202.59.163.129
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/6052/I__6hMTxSdTcfSWr9qtSeg" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/ID.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/印度尼西亚-2-1643084">印度尼西亚</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/印度尼西亚,万丹省-3-1923045">万丹省</a>
-									<a href="http://www.mayidaili.com/free/location/印度尼西亚,万丹省,Nusa-4-1960732">Nusa</a>
-
-							</td>
-                            <td>
-                                <span class="label label-danger">1826</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>14.207.12.132
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/53016/avZCahquSV4d2G12hfiJ1A" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/TH.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/泰国-2-1605651">泰国</a>
-                            </td>
-                            <td>
-									<a href="http://www.mayidaili.com/free/location/泰国,Bangkok-3-1609348">Bangkok</a>
-									<a href="http://www.mayidaili.com/free/location/泰国,Bangkok,曼谷-4-1609350">曼谷</a>
-
-							</td>
-                            <td>
-                                <span class="label label-danger">3518</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>113.18.193.19
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/16592/g9Hj-Adz5EXnFJfcnRfk0A" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/38850/tsdNPwRU7VKmuc6ETSdicA" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
@@ -504,7 +329,7 @@ texto="""
 
 							</td>
                             <td>
-                                <span class="label label-success">95</span>
+                                <span class="label label-success">109</span>
                                 ms
 							</td>
                             <td>
@@ -512,10 +337,36 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>221.228.64.56
+                            <td>122.72.32.75
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/51177/Ntdamh6csdryFUFM6kdqlw" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/53575/PuhGqx0y8_CT4z-noUyG1Q" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/高匿">高匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,重庆市-3-1814905">重庆市</a>
+
+
+							</td>
+                            <td>
+                                <span class="label label-success">138</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>221.204.21.65
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/28400/AI5_AXuxcEleXddK1xVI2g" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -525,12 +376,12 @@ texto="""
                                     <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
                             </td>
                             <td>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,江苏省,无锡市-4-1790902">无锡市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,山西省-3-1795912">山西省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,山西省,太原市-4-1793510">太原市</a>
 
 							</td>
                             <td>
-                                <span class="label label-success">66</span>
+                                <span class="label label-success">34</span>
                                 ms
 							</td>
                             <td>
@@ -538,10 +389,10 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>60.195.204.249
+                            <td>218.29.187.4
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/58589/9Bav3RNkkORjOnWKL6pspA" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/7341/7UOMuI0e0pC0aRoJ361xvA" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -551,12 +402,12 @@ texto="""
                                     <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
                             </td>
                             <td>
-									<a href="http://www.mayidaili.com/free/location/中国,北京市-3-2038349">北京市</a>
-
+									<a href="http://www.mayidaili.com/free/location/中国,河南省-3-1808520">河南省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,河南省,商丘市-4-1796132">商丘市</a>
 
 							</td>
                             <td>
-                                <span class="label label-danger">2355</span>
+                                <span class="label label-success">35</span>
                                 ms
 							</td>
                             <td>
@@ -564,36 +415,10 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>189.50.14.169
+                            <td>175.6.10.15
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/30201/pPJlWsWgcp4Zk1yQRJ2u_w" />
-							</td>
-                            <td>
-                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
-                            </td>
-                            <td>
-                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/BR.png" class="mr5" />
-                                    <a href="http://www.mayidaili.com/free/location/巴西-2-3469034">巴西</a>
-                            </td>
-                            <td>
-
-
-
-							</td>
-                            <td>
-                                <span class="label label-success">715</span>
-                                ms
-							</td>
-                            <td>
-                                <time class="timeago">刚刚</time>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>60.195.117.245
-							</td>
-                            <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/34331/R7fXSoUzUJ-3OVGAMM4tSw" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/26279/k_EFMloGhNDIurqZUKAueA" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -603,12 +428,12 @@ texto="""
                                     <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
                             </td>
                             <td>
-									<a href="http://www.mayidaili.com/free/location/中国,北京市-3-2038349">北京市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,湖南省-3-1806691">湖南省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,湖南省,长沙市-4-1815551">长沙市</a>
 
-									<a href="http://www.mayidaili.com/free/location/中国,北京市,,海淀区-5-1809103">海淀区</a>
 							</td>
                             <td>
-                                <span class="label label-danger">2013</span>
+                                <span class="label label-success">78</span>
                                 ms
 							</td>
                             <td>
@@ -616,10 +441,114 @@ texto="""
                             </td>
                         </tr>
                         <tr>
-                            <td>111.1.61.54
+                            <td>185.28.193.95
 							</td>
                             <td>
-								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/8218/AbtUCh3HB1w8ViuHWfVQAw" />
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/54350/GdolUlrxz5dOgwAHh5dtbg" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CZ.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/捷克共和国-2-3077311">捷克共和国</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-success">661</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>54.215.198.81
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/31986/lL6Ii3_HBIxfsChL5lhF3w" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/高匿">高匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/US.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/美国-2-6252001">美国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/美国,加利福尼亚州-3-5332921">加利福尼亚州</a>
+									<a href="http://www.mayidaili.com/free/location/美国,加利福尼亚州,San Jose-4-5392171">San Jose</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">695</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>111.92.227.144
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/21193/h-XTkN4vl1B47pTTsPbyKw" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/HK.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/香港-2-1819730">香港</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-danger">1663</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>201.174.52.29
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/32797/XLwnWVpcCsRwlzO85KmRBA" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/MX.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/墨西哥-2-3996063">墨西哥</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/墨西哥,奇瓦瓦州-3-4014336">奇瓦瓦州</a>
+									<a href="http://www.mayidaili.com/free/location/墨西哥,奇瓦瓦州,Ciudad Juárez-4-4013708">Ciudad Juárez</a>
+
+							</td>
+                            <td>
+                                <span class="label label-warning">1250</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>183.131.135.69
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/48786/0DMYK9wFFAymf55icCgB-A" />
 							</td>
                             <td>
                                     <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
@@ -630,11 +559,90 @@ texto="""
                             </td>
                             <td>
 									<a href="http://www.mayidaili.com/free/location/中国,浙江省-3-1784764">浙江省</a>
-									<a href="http://www.mayidaili.com/free/location/中国,浙江省,杭州市-4-1808925">杭州市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,浙江省,舟山市-4-1784107">舟山市</a>
 
 							</td>
                             <td>
-                                <span class="label label-success">67</span>
+                                <span class="label label-success">71</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>203.172.209.246
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/31222/fUr3IY1Xz58gh1_M_NRMyg" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/TH.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/泰国-2-1605651">泰国</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-success">702</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>219.127.253.43
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/25657/4pRKryPBn0OdU9hhP4mAuw" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/高匿">高匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/JP.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/日本-2-1861060">日本</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-danger">2221</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>220.249.101.159
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/18928/F50hS0P0MsdRVXgPcgGndA" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/高匿">高匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,湖北省-3-1806949">湖北省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,湖北省,武汉市-4-1791243">武汉市</a>
+									<a href="http://www.mayidaili.com/free/location/中国,湖北省,武汉市,江夏区-5-6642320">江夏区</a>
+									湖北经济学院
+							</td>
+                            <td>
+                                <span class="label label-danger">1700</span>
                                 ms
 							</td>
                             <td>
@@ -677,10 +685,10 @@ texto="""
         </li>
 
     <li >
-            <a href="http://www.mayidaili.com/free/3217">3217</a>
+            <a href="http://www.mayidaili.com/free/3222">3222</a>
     </li>
     <li >
-            <a href="http://www.mayidaili.com/free/3218">3218</a>
+            <a href="http://www.mayidaili.com/free/3223">3223</a>
     </li>
 
         <li>
@@ -718,7 +726,7 @@ var _hmt = _hmt || [];
 </div>
 		<script language="javascript">
 		$(function(){
-			document.cookie="proxy_token=FVoLBwIF;path=/";
+			document.cookie="proxy_token=xpMPHFxm;path=/";
 			$("img.js-proxy-img").each(function(index,item){
 				$(this).attr("src",$(this).attr("data-uri")).removeAttr("data-uri");;
 			});
@@ -726,7 +734,6 @@ var _hmt = _hmt || [];
 		</script>
     </body>
 </html>
-
 """
 
 
@@ -734,11 +741,14 @@ def test(page):
     # ips = getIPfromPage(page, portrule=r"""%s</td>\n<td style="WIDTH:40PX">(\d+)""")
     # print ips
     # print len(ips)
-    # rule=r"""%s</td>\n<td><img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""" % ('203.192.12.146')
-    # rule=r"""%s\n(.)""" % ('122.72.32.82')
-    rule="""222.187.32.174</td>\n<td>\n<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/21979/L9zUyjxPvfThHLWA5L_ULQ" /></td>"""
+    # rule=r"""%s\s?\t+</td>\s?    *<td>\s?\t+<img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""" % ('219.127.253.43')
+    rule="""document.cookie="(.*);path"""
 
-    port = re.search(rule,page).groups()
+    template=re.compile(rule)
+    port =template.findall(page)
+
+
+    # port = re.search(rule,page).groups()
     print 'port is',port,':',len(port)
 
-test(texto)
+# test(texto)

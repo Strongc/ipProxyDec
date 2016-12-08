@@ -29,8 +29,7 @@ proxysource=[
 # ('http://ip.baizhongsou.com/', '', '','',r"""%s:(\d+)""",'http','0'),
 
 # ('http://www.3464.com/data/Proxy/Socks5/', '', '','',r"""%s</td><td>(\d+)""" ,'socks5','0'),
-#100
-('http://www.mayidaili.com/free/%s','1','1','',r"""%s</td>\n\s+<td><img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""",'socks5','1',''),#端口为图片
+# ('http://www.mayidaili.com/free/%s','1','100','',r"""%s\r\s\t+</td>\r\s*<td>\r\s\t+<img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""",'socks5','1','document.cookie="(.*);path'),#端口为图片
 # ('http://www.proxy360.cn/Region/Brazil','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),
 # ('http://www.proxy360.cn/Region/China','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),
 # ('http://www.proxy360.cn/Region/America','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),

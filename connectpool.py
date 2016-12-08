@@ -18,7 +18,8 @@ class ConnectPool:
 		self.__connect_pool = Queue.Queue(maxsize=poolsize) 		#连接池
 		self.connectTool=connecttool.ConnectTool()
 		self.logger = logger
-
+	def setHeader(self,head,value):
+		self.connectTool.setHeader(head,value)
 	def check_network(self):
 		import httplib2 
 		try: 
