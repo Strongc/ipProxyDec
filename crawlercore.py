@@ -12,10 +12,16 @@ def getfullcode(path='http://ip.zdaye.com/'):
     result= driver.page_source
     driver.quit()
     return result
-def getIPfromPage(page,rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])',portrule=''):
+
+def getIPfromPage(page,rules=None):
     # import copy
     # htmlcode= copy.deepcopy(page)
-
+    if rules[3]=='':
+        rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])'
+    else:
+        rule=rules[3]
+    portrule=rules[4]
+    porttype=rules[6]
     reip = re.compile(rule)
 
     iplist=set()
@@ -28,8 +34,8 @@ def getIPfromPage(page,rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])',port
 
             prule=portrule % (ip)
 
-            # print prule
-            # print page
+            print prule
+            print page
 
 
 
@@ -40,6 +46,13 @@ def getIPfromPage(page,rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])',port
             # print page
             #
             # port=report.findall(page)[0]
+            if porttype == '1':
+                picurl=port
+                print port
+
+                port_picrule=rules[7]
+                if port_picrule!='':
+                    pass
 
         print ip,port
         iplist.add((ip,port))
@@ -49,7 +62,7 @@ def getIPfromPage(page,rule=r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])',port
 
 def getStaticHtml(path):
     conpool=connectpool.getObject()
-
+    print path
     head,result=conpool.getConnect(URL=path)
     return result
 
@@ -61,345 +74,657 @@ def getStaticHtml(path):
 def ruletowebsite(rules):
     websites=[]
     if rules[1]=='':
-        websites.append(rules[0])
+        websites.append((rules[0],rules))
     else:
 
         for i in range(int(rules[1]), int(rules[2]) + 1):
             result = rules[0] % (i)
-            websites.append(result)
+            websites.append((result,rules))
     return websites
 
 texto="""
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no;">
-<title>免费http代理ip 第1页 - 快代理</title>
-
-<meta name="keywords" content="快代理,http代理,https代理,私密代理,代理服务器,高速http代理,代理,代理ip,私密代理ip,爬虫代理ip,刷单代理ip,随机五位端口,独享代理ip,稳定代理ip,代理ip地址,花刺代理ip,ip代理,ip代理软件,免费代理服务器,免费代理ip,高匿代理,高匿代理ip,最新代理ip,代理api接口,代理服务器ip,代理地址,代理列表,代理ip购买" />
-<meta name="description" content="快代理专业为您提供代理ip购买|代理服务器|随机五位端口|高匿代理|高匿代理ip|爬虫代理ip|刷单代理ip|私密代理ip|独享代理|独享代理ip|高速http代理|免费代理ip|代理ip地址|最新免费代理ip每天更新，想要了解更多代理服务|代理地址|代理列表的详情，就到快代理。" />
-<meta content="index,follow" name="robots"/>
-<meta content="index,follow" name="GOOGLEBOT"/>
-<meta content="快代理"  name="Author"/>
-<meta name="renderer" content="webkit">
-<meta name="baidu_union_verify" content="c087a423b52225f404d4c97e59e53464">
-<meta name="google-site-verification" content="Pd8y4Id4xJSxMvj-OwUhaZaK7COpr-8LcANUG30jxW8" />
-
-<link rel="shortcut icon" href="http://img.kuaidaili.com/img/favicon.ico?v=3" type="image/x-icon">
-<link rel="stylesheet" href="http://img.kuaidaili.com/css/base.min.css?v=105" media="screen" />
-
-<style>
-body{font-family:"微软雅黑",Helvetica;font-size:13px;line-height:160%;color:#666;background-color:#fff;-webkit-tap-highlight-color:rgba(0,0,0,0);margin:0 auto;padding:20px 10px}a img{border:0}.placeholder{color:#aaa}form,table,td,h1,h2,h3,h4,h5,ul,ol,li,p{margin:0;padding:0;border:0;list-style:none}#header{position:relative;max-width:1100px;min-height:73px;margin:0 auto;border-bottom:1px solid #ddd;clear:right}#logo{width:136px;position:absolute;bottom:0}#logo img{width:136px;height:44px}.header_top{float:right;padding:0;line-height:30px}.header_top .login{display:inline-block;margin-right:25px}.header_top .login .log{color:#b94a48}.header_top a{text-decoration:none;color:#49afcd}.header_top a:hover{text-decoration:underline}.header_top a img{vertical-align:-22%}.header_top .splt{color:#bbb;margin:0 8px}.header_top .btn{background-color:#49afcd;padding:3px 5px 3px 5px;color:#fff;font-weight:bold;border-radius:3px;transition:background-color .2s linear}.header_top .btn:hover{background-color:#3a87ad;text-decoration:none}.header_top .faq_btn{background-color:#aaa}.header_top .faq_btn:hover{background-color:#1a1a1a}.header_top .event{margin-right:50px}.header_top .event a{line-height:30px;color:red;text-decoration:none}.header_top .event a:hover{text-decoration:underline}.header_top .event a img{vertical-align:sub}@media screen and (min-width:960px){.header_top{min-width:710px}.header_top .wrap{float:right}#nav ul li.active .upper{margin-left:11px}}#nav ul{margin-top:10px;float:right}#nav>ul li{float:left;display:inline-block;height:37px;margin-right:10px}#nav>ul li:last-child{margin-right:0}#nav>ul li a{display:inline-block;color:#979795;font-size:16px;font-weight:bold;line-height:32px;vertical-align:middle;padding:0 10px;text-decoration:none;border-bottom:2px solid #c8e6e0}#nav>ul li a:hover{border-bottom:2px solid #49afcd;color:#333}#nav>ul>li.active>a{background-color:#49afcd;color:#fff;border-bottom:2px solid #49afcd}#nav>ul li .upper{position:absolute;margin-top:-5px}#container{max-width:1100px;min-height:500px;margin:0 auto;padding-top:18px}.taglineWrap{background:#eee;min-height:20px;margin:0 -10px}.taglineContent{max-width:1100px;margin:0 auto;padding:24px 19px;word-wrap:break-word}.taglineContent div{display:inline-block}.taglineContent h1{margin-bottom:20px}.taglineContent h2{margin-bottom:15px}.taglineContent span{display:inline-block;width:110px}.taglineContent li{font-size:14px;margin:6px 0}.taglineContent p{font-size:14px;margin:3px 0}#footer{margin-top:30px}#footer span{color:#bbb}#footer .footnav{margin-bottom:5px}.footnav a{padding:0 6px;margin:0 5px;color:#999;text-decoration:none;display:inline-block}.footnav a:hover{color:#fff;background:#49afcd;line-height:23px;text-decoration:none;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}.footnav span{color:#ddd}#footer2{margin:30px 0 20px 0;padding:30px 0;border-top:1px solid #efefef}#footer2 .container{width:1100px;margin:0 auto}#footer2 .copyright{width:320px;color:#bbb;float:left;display:inline-block;line-height:40px;vertical-align:top}#footer2 .footnav{display:inline-block;line-height:40px;vertical-align:top;float:left}#footer2 .icon{display:inline-block;float:right;line-height:40px;vertical-align:top}ul.onMShow{width:77px;position:fixed;bottom:93px;right:0;z-index:100}ul.onMShow li{list-style:none;background-position:left top;background-repeat:no-repeat}ul.onMShow li a{position:relative;display:block;width:70px;height:50px;border:0;opacity:.8}ul.onMShow li a div{display:none}ul.onMShow li a:hover{background::none;display:block;width:auto}ul.onMShow li a:hover div{display:block;position:absolute;padding:0 13px 0 10px;line-height:43px;width:auto;right:87px;top:0;background-color:#49afcd;color:#fff;cursor:pointer;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}ul.onMShow li a:hover div.two{line-height:21px}span.bt1,span.bt2,span.bt3{width:43px;height:43px;display:block;padding:0;position:absolute;left:0;top:0;background:#49afcd url(../img/licon.png) 0 0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}span.bt2{background-position:0 -40px}span.bt3{background-position:0 -80px}span.bt1:hover,span.bt2:hover,span.bt3:hover{opacity:1}.trans a{color:#fcfcfc}h1{color:#2f2f2f;font-size:24px}h2{color:#2f2f2f;font-size:20px}h3{color:#2f2f2f;font-size:18px}h4{color:#2f2f2f;font-size:16px}h5{color:#2f2f2f;font-size:14px}.c_title{margin:10px 0 30px 0}.c_title h2{display:inline}.center{width:100%;text-align:center}.right{float:right}.contact form .control-group:after{content:".";display:block;height:0;visibility:hidden;clear:both}.control-group{margin-bottom:15px;clear:both}.control-group .price{color:#F60;font-size:20px;font-weight:bold;margin-right:1px}.contact form .control-label{float:left;color:#666;text-align:left;width:140px;font-size:16px;margin:5px 0}.control-group .control-label.active{color:#b94a48;font-weight:bold}.control-group .controls .hint{font-size:13px}.contact form .controls{float:left;margin-left:0}#listnav{margin:20px 0 30px 0}#listnav ul{text-align:center;border:solid;border-width:0;padding:2px 0 0 0}#listnav li{display:inline;padding:0 0 0 10px;list-style:none;border:1px}#listnav a{color:#9d9d9d;text-decoration:none;padding:4px 6px;border:1px solid #dfdfdf}#listnav a:hover{color:#9d9d9d;background:#e5f3f6;border:1px solid #49afcd}#listnav a.active{color:#fff;background:#49afcd;border:1px solid #49afcd}#list table{margin-left:auto;margin-right:auto}#list p{margin:0 0 10px 0}.hint{color:#aaa}.control-label .star{display:inline-block;height:10px;font-size:26px;color:red;vertical-align:top;padding-top:5px;margin-left:2px}span.hint{margin-left:10px}.controls b{margin-right:20px}.controls .err{color:red;font-weight:bold}.controls a,.submit a{color:#49afcd;text-decoration:none}.controls a:hover,a:hover.hint{color:#2f96b4;text-decoration:underline}.btn a{height:30px;line-height:30px;padding:0 11px;font-size:16px;color:white;display:inline-block;text-decoration:none;background:#49afcd}.btn a:hover{background:#2f96b4;text-decoration:none}.btn a.disabled{background:#a3aeb1}.btn.center>a{margin-bottom:20px}.taglineWrap .btn.center>a{margin-bottom:0}.invisible{visibility:hidden;position:absolute}.fillhint{margin-left:140px}.submit{margin-left:140px;margin-top:10px;clear:both}.buy{float:right}.buy a{color:#49afcd;font-size:13px;font-weight:bold;text-decoration:none}.buy a:hover{text-decoration:underline}.well{min-height:20px;padding:19px;margin-bottom:20px;background-color:#f5f5f5;border:1px solid #eee;border:1px solid rgba(0,0,0,0.05);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;word-wrap:break-word}.well h2,.well h3{margin-bottom:10px}.well b{display:inline-block;width:110px;font-weight:normal;line-height:2;vertical-align:top}.well b a.active{font-size:14px;color:#b94a48;text-decoration:none}.well h3 a,.well b a{font-size:13px;color:#49afcd;text-decoration:none}.well h3.active{color:#b94a48}.well .hint{font-size:13px;float:right;color:#468847;font-weight:normal}.tag{margin-left:3px;font-weight:normal;font-size:9px}.upper{vertical-align:super;color:red}.badge{padding:1px 5px 1px;white-space:nowrap;color:#fff;background-color:#999;-webkit-border-radius:9px;-moz-border-radius:9px;border-radius:9px;margin-left:5px}.badge-sup1{position:relative;top:-10px;margin-left:-5px}.badge-important{background-color:#b94a48}code{padding:2px 4px;margin-left:2px;margin-right:2px;background-color:#f7f7f9;border:1px solid #e1e1e8;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}table{max-width:100%;border-collapse:collapse;border-spacing:0;background-color:transparent}td a{color:#49afcd;text-decoration:none}td a:hover{text-decoration:underline}td .price{color:#F60}td .active{color:#3C0}td .warn{color:#b94a48}td .seq{margin:0 3px;color:#ddd}.table{width:100%;margin-bottom:10px}.table th,.table td{padding:8px;line-height:18px;text-align:left;vertical-align:top;border-top:1px solid #ddd}.table th.center,.table td.center{text-align:center;width:auto}.table thead th{vertical-align:bottom;font-weight:bold}.table tbody+tbody{border-top:2px solid #ddd}.table-bordered{border:1px solid #ddd;border-left:0;border-collapse:separate;*border-collapse:collapsed;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.table-noborder{border:1px solid #ddd;border-top:0;border-collapse:separate;*border-collapse:collapsed;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.table-bordered th,.table-bordered td{border-left:1px solid #ddd}.table-bordered thead:first-child tr:first-child th,.table-bordered tbody:first-child tr:first-child th,.table-bordered tbody:first-child tr:first-child td{border-top:0}.table-bordered thead:first-child tr:first-child th:first-child,.table-bordered tbody:first-child tr:first-child td:first-child{-webkit-border-radius:4px 0 0 0;-moz-border-radius:4px 0 0 0;border-radius:4px 0 0 0}.table-bordered thead:first-child tr:first-child th:last-child,.table-bordered tbody:first-child tr:first-child td:last-child{-webkit-border-radius:0 4px 0 0;-moz-border-radius:0 4px 0 0;border-radius:0 4px 0 0}.table-bordered thead:last-child tr:last-child th:first-child,.table-bordered tbody:last-child tr:last-child td:first-child{-webkit-border-radius:0 0 0 4px;-moz-border-radius:0 0 0 4px;border-radius:0 0 0 4px}.table-bordered thead:last-child tr:last-child th:last-child,.table-bordered tbody:last-child tr:last-child td:last-child{-webkit-border-radius:0 0 4px 0;-moz-border-radius:0 0 4px 0;border-radius:0 0 4px 0}.table-striped tbody tr:nth-child(odd) td,.table-striped tbody tr:nth-child(odd) th{background-color:#f9f9f9}.odd{background-color:#f9f9f9}.table tbody tr:hover td,.table tbody tr:hover th{background-color:#f5f5f5}.stat span{font-size:16px;color:#2f2f2f}.stat strong{font-size:36px;color:#49afcd;font-weight:bold}.stat .hint{font-size:13px;color:#aaa}.stat_num{color:#49afcd;font-size:24px;font-weight:bold}#uc_content{margin-top:10px}a.submit-a-request i{font-style:normal}a.submit-a-request{color:#49afcd}a.submit-a-request:hover{color:#fff;text-decoration:none}.submit-a-request{border:2px solid #49afcd;border-radius:3px;display:inline;font-weight:normal;line-height:1.2;padding:4px 5px 4px 3px;text-align:left;text-decoration:none}.submit-a-request:hover{background-color:#49afcd;color:#fff;text-decoration:none}.row-fluid{width:100%;overflow:hidden}.row-fluid>[class*="span"]{float:left;margin-left:1.7%}.row-fluid>[class*="span"]:first-child{margin-left:0}.row-fluid>.span3{width:23.604255317%}.row-fluid>.span4{width:27%}.row-fluid>.span9{width:74.30939226%}.sidebar .well{margin-bottom:30px}div.sidebar{display:block}.nav{margin-left:0;list-style:none}.nav li a{text-decoration:none;display:block}.nav li a:hover{text-decoration:none;background-color:#eee}.nav .nav-center{display:block;padding:3px 15px;margin-bottom:7px;font-size:13px;font-weight:bold;line-height:18px;color:#999;text-align:center}.nav .nav-header{display:block;padding:3px 15px;font-size:13px;font-weight:bold;line-height:18px;color:#999;text-transform:uppercase}.nav li+.nav-header{margin-top:9px}.nav-list{padding-left:15px;padding-right:15px;margin-bottom:0}.nav-list>li>a,.nav-list .nav-header{margin-left:-15px;margin-right:-15px}.nav-list>li>a{padding:3px 15px}.nav-list>.active>a,.nav-list>.active>a:hover{color:#fff;background-color:#08c}.nav-list [class^="icon-"]{margin-right:2px}.nav-list .divider{height:1px;margin:8px 1px;overflow:hidden;background-color:#e5e5e5;border-bottom:1px solid #fff;*width:100%;*margin:-5px 0 5px}.nav-list>.active>a,.nav-list>.active>a:hover{background-color:#49afcd}.nav-list i{opacity:.6}.nav-list>.active i{opacity:1}.nav-list a{color:#2f2f2f}.tab-content{display:table;width:100%}.tabs-below .nav-tabs,.tabs-right .nav-tabs,.tabs-left .nav-tabs{border-bottom:0}.tab-content .active,.pill-content .active{display:block}.tab-content .tab-pane,.pill-content .pill-pane{padding:20px 0 0 10px;border-left:1px solid #ddd;border-right:1px solid #ddd;border-bottom:1px solid #ddd;border-radius:0 0 4px 4px}.btt{position:fixed;bottom:45px;right:30px;opacity:.4;background-color:#49afcd;padding:15px;visibility:visible;-webkit-transition:opacity .4s linear;-moz-transition:opacity .4s linear;-ms-transition:opacity .4s linear;-o-transition:opacity .4s linear;transition:opacity .4s linear}.btt:hover{opacity:.8}.bottom_kw{color:#fff}.bottom_kw a{text-decoration:none;color:#fff}.dropdown{position:relative}.caret{display:inline-block;width:0;height:0;vertical-align:top;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #000;opacity:.3;filter:alpha(opacity=30);content:""}.dropdown .caret{margin-top:14px;margin-left:4px}.dropdown:hover .caret,.open.dropdown .caret{opacity:1;filter:alpha(opacity=100)}.dropdown.active .caret{border-top-color:#fff;opacity:1}.dropmenu{position:absolute;top:100%;left:0;z-index:10;float:left;display:none;min-width:160px;padding:4px 0;margin:0;list-style:none;background-color:#fff;border-color:#ccc;border-color:rgba(0,0,0,0.2);border-style:solid;border-width:1px;-webkit-border-radius:0 0 5px 5px;-moz-border-radius:0 0 5px 5px;border-radius:0 0 5px 5px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,0.2);-moz-box-shadow:0 5px 10px rgba(0,0,0,0.2);box-shadow:0 5px 10px rgba(0,0,0,0.2);-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box;display:block !important;visibility:hidden;opacity:0;transition:opacity .2s linear}#nav #menu>li.dropdown:hover>.dropmenu{display:block;opacity:1 !important;visibility:visible}#nav .dropmenu{border-radius:0;-moz-border-radius:0;-webkit-border-radius:0;border-color:#e5e5e5;border:0;box-shadow:0 3px 5px rgba(0,0,0,0.5);-webkit-box-shadow:0 3px 5px rgba(0,0,0,0.5);background:#393939;margin-top:-2px}#nav .dropmenu li{display:block;width:100%;height:28px;line-height:28px}#nav .dropmenu a{display:block;width:100%;height:28px;padding:0;text-indent:10px;font-size:14px;line-height:28px;border:0;clear:both;font-weight:normal;color:#fff;white-space:nowrap}#nav .dropmenu li>a:hover,#nav .dropmenu .active>a,#nav .dropmenu .active>a:hover{display:block;width:100%;color:#fff;text-decoration:none;background-color:#49afcd;border:0}.lead{font-size:20px;max-width:700px;margin:0 auto;padding:0 10px;line-height:1.3em}.text-center{text-align:center}@media screen and (max-width:770px){table,tr,td{border-collapse:collapse}.table,.table td,.table tr,.table thead,.table tbody,.table th{display:block;position:relative}.table thead{display:none;position:absolute;top:-9999px;left:-9999px}.table td{position:relative;padding-left:40%}.table td:before{position:absolute;top:6px;left:6px;width:40%;padding-right:10px;white-space:nowrap;content:attr(data-title);font-weight:bold}.table-striped tbody tr:nth-child(odd) td,.table-striped tbody tr:nth-child(odd) th{background-color:#eee}.table th.center,.table td.center{text-align:left;width:auto}#menu{width:100%;display:block}body{padding-top:0}#nav{display:block;overflow:hidden;width:100%}#nav ul{float:left;margin-top:10px}#nav ul li{margin:0;padding:0;font-size:0;width:100%;position:relative;height:auto;margin-bottom:2px}#nav ul li a{background-color:#c1c1bf;color:#fff;border-bottom:0;display:block;height:30px;line-height:30px;text-align:center;font-size:14px;margin:0;padding:0;border-right:1px solid #fff;text-align:left;text-indent:1em;font-weight:normal}#nav ul li.active a{border-bottom:0}#nav ul li a:hover{border-bottom:0;background-color:#9e9e9c;color:#fff}#nav ul li .upper{margin-left:-7px}#nav .dropmenu{padding:0;margin-top:-1px}#nav .dropdown{height:auto;overflow:hidden}#nav #menu>li.dropdown:hover>.dropmenu{background:#393939}#nav .dropmenu{position:relative;width:100%;opacity:1 !important;visibility:visible;background:#393939}#nav .dropmenu li{background:#393939}#nav .dropmenu li:last-child{margin:0}#nav .dropmenu a{display:block;width:100%;height:28px;padding:0;text-indent:20px;font-size:13px;line-height:28px;border:0;clear:both;font-weight:normal;color:#fff;white-space:nowrap}#nav ul.dropmenu li a{background:#393939}#nav .dropmenu li>a:hover,#nav .dropmenu .active>a,#nav .dropmenu .active>a:hover{display:block;text-indent:20px;font-size:13px;width:100%;color:#fff;text-decoration:none;background-color:#08c;border:0}#logo{width:100px;top:20px;bottom:auto}#logo img{width:123px;height:40px}.header_top .login{margin-right:5px}.header_top{max-width:500px;text-align:right}.header_top .wrap{display:block}#welcome{display:none}.header_top .event a{font-size:10px}.header_top .event{margin-right:0}#footer2{margin:20px 0;padding:10px}#footer2 .container{width:100%}#footer2 .copyright{text-align:center;width:100%}#footer2 .icon{text-align:center;display:block;float:none}#footer2 .footnav{text-align:center;padding-bottom:20px;float:none;width:100%}.tag_area{display:-webkit-box;margin-top:20px;position:relative}.tag_area a.label{display:block;-webkit-box-flex:1;text-align:center;padding:10px 0;font-size:16px;width:100%}.tag_area span.buy{position:absolute;display:block;left:0;width:100%;text-align:left;bottom:0}.contact .control-group{margin:20px 0 5px 0}input{margin:0;padding:0}input.span4,input.span3,input.span7,textarea.span7,textarea.span4,.uneditable-input.span4{width:100%;-webkit-box-sizing:border-box;margin:0;padding:4px}.stat strong{font-size:20px}.stat .right{float:none;display:block}}@media screen and (max-width:480px){.buy{display:none}.table{border-top:0}.table td{font-size:12px}.stat strong{font-size:20px}.stat .right{float:none;display:block}#container{padding:0}ul.onMShow{width:53px}.btt{right:6px}.header_top{max-width:230px;text-align:right}.header_top .event{margin-right:0;margin-left:5px}#listnav{overflow:hidden;padding-top:10px;margin:5px 0 10px 0}#listnav ul{display:block}#listnav li{padding:0 4px;margin-bottom:10px;float:left}#listnav a{padding:3px 15px;display:inline}#footer2 .beian { color: #bbb; text-decoration: none; } #footer2 .beian:hover { color: #49afcd; }}
-</style>
-
-
-<meta name="renderer" content="webkit">
-<meta name="baidu-site-verification" content="AO3Q6dKj9R" />
-<meta name="sogou_site_verification" content="9ELczs5cQc"/>
-<meta name="360-site-verification" content="feeadcad97dd7093f9abb1ee5285f031" />
-</head>
-
-<body>
-
-<div id="header">
-    <div id="logo"><a href="/"><img src="http://img.kuaidaili.com/img/kdl_logo.jpg?v=1" alt="快代理logo"/></a></div>
-    <div class="header_top">
-
-        <span class="event">
-
-        </span>
-
-        <span class="wrap">
-            <span id="welcome"></span>
-            <span class="login">
-                <span class="splt"></span><a class="uc_btn btn" href="/usercenter/"><i class="icon-user icon-white"></i>&nbsp;会员中心</a><span id="noti"></span>
-            </span>
-
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=2162481273&amp;site=qq&amp;menu=yes"><img border="0" width="77" height="22" src="http://img.kuaidaili.com/img/button_21.gif" alt="留言咨询" title="留言咨询"/></a>
-        </span>
-    </div>
-    <div id="nav">
-        <ul id="menu">
-        <li id="menu_list"><a href="/">首页</a></li>
-        <li id="menu_free"><a href="/free/">免费代理</a></li>
-        <li id="menu_pricing"><a href="/pricing/">购买代理</a></li>
-        <li id="menu_ops"><a href="/dist/">开放代理</a></li>
-
-        <li id="menu_kps"><a href="/kps/">独享代理</a></li>
-        <li id="menu_fetch" class="dropdown"><a href="javascript:void(0);">代理提取<b class="caret"></b></a>
-            <ul class="dropmenu">
-              <li><a href="/fetch/">提取开放代理</a></li>
-              <li><a href="/dps/fetch/">提取私密代理</a></li>
-            </ul>
-        </li>
-        <li id="menu_apidoc" class="dropdown"><a href="javascript:void(0);">API接口<b class="caret"></b></a>
-            <ul class="dropmenu">
-              <li><a href="/apidoc/">开放代理API</a></li>
-              <li><a href="/dps/apidoc/">私密代理API</a></li>
-            </ul>
-        </li>
-        <li id="menu_help"><a href="http://help.kuaidaili.com" target="_blank">帮助中心</a></li>
-        </ul>
-    </div>
-
-</div>
-
-
-
-
-<div class="taglineWrap">
-    <div class="taglineContent">
-        <h2>为什么使用快代理？</h2>
-        <p>我们不间断地运行着极其高效、精准的公网代理收集系统，每天扫描的代理数以万计，最新出现的代理总能在第一时间收录。</p>
-        <p>我们精确地检测每一个代理IP的匿名度、响应时间、数据传输速度、地域、运营商，平均每个IP每天被检测上百次，因此你总是可以在这里找到可以正常工作的代理。</p>
-        <p>我们提供了极其丰富的代理筛选和API接口，只为更便捷地提取。</p>
-
-    </div>
-</div>
-
-<div id="container">
-
-
-<div class="stat" style="margin: 20px 0;">
-    <span>代理总数: <strong>15008140</strong>个<span class="hint"> 1分钟前更新</span></span>
-    <span class="right">10分钟内可用: <strong>4437</strong>个<span class="hint"> 1分钟前更新</span></span>
-</div>
-
-<div id="freelist" style="margin:10px 0 10px 0;">
-    <h3 style="text-align:center;">免费高速HTTP代理IP列表（2016-12-06）</h3>
-</div>
-<div id="intro">
-<p></p>
-</div>
-<div id="index_free_list">
-    <table class="table table-bordered table-striped  table-index">
-      <thead>
-          <tr>
-            <th>IP</th>
-            <th>PORT</th>
-            <th>匿名度</th>
-            <th>类型</th>
-            <th>get/post支持</th>
-            <th>位置</th>
-            <th>响应速度</th>
-            <th>最后验证时间</th>
-          </tr>
-        </thead>
-        <tbody>
-
-            <tr>
-                <td data-title="IP">117.90.4.158</td>
-                <td data-title="PORT">9000</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 镇江市 电信</td>
-                <td data-title="响应速度">3秒</td>
-                <td data-title="最后验证时间">1分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">121.232.147.126</td>
-                <td data-title="PORT">9000</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 镇江市 电信</td>
-                <td data-title="响应速度">1秒</td>
-                <td data-title="最后验证时间">3分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">121.10.1.181</td>
-                <td data-title="PORT">8080</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP, HTTPS</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 广东省 东莞市 电信</td>
-                <td data-title="响应速度">3秒</td>
-                <td data-title="最后验证时间">6分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">115.221.126.120</td>
-                <td data-title="PORT">808</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP, HTTPS</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 浙江省 温州市 电信</td>
-                <td data-title="响应速度">3秒</td>
-                <td data-title="最后验证时间">9分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">117.90.7.205</td>
-                <td data-title="PORT">9000</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 镇江市 电信</td>
-                <td data-title="响应速度">1秒</td>
-                <td data-title="最后验证时间">12分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">117.85.33.199</td>
-                <td data-title="PORT">8118</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 无锡市 电信</td>
-                <td data-title="响应速度">3秒</td>
-                <td data-title="最后验证时间">15分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">121.232.144.10</td>
-                <td data-title="PORT">9000</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 镇江市 电信</td>
-                <td data-title="响应速度">2秒</td>
-                <td data-title="最后验证时间">19分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">117.90.2.56</td>
-                <td data-title="PORT">9000</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 江苏省 镇江市 电信</td>
-                <td data-title="响应速度">2秒</td>
-                <td data-title="最后验证时间">21分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">183.140.86.203</td>
-                <td data-title="PORT">3128</td>
-                <td data-title="匿名度">高匿名</td>
-                <td data-title="类型">HTTP, HTTPS</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 浙江省 嘉兴市 电信</td>
-                <td data-title="响应速度">3秒</td>
-                <td data-title="最后验证时间">24分钟前</td>
-            </tr>
-
-            <tr>
-                <td data-title="IP">220.113.26.18</td>
-                <td data-title="PORT">8080</td>
-                <td data-title="匿名度">透明</td>
-                <td data-title="类型">HTTP, HTTPS</td>
-                <td data-title="get/post支持">GET, POST</td>
-                <td data-title="位置">中国 北京市 北京市 鹏博士</td>
-                <td data-title="响应速度">2秒</td>
-                <td data-title="最后验证时间">28分钟前</td>
-            </tr>
-
-        </tbody>
-    </table>
-    <p>注：表中响应速度是中国测速服务器的测试数据，仅供参考。响应速度根据你机器所在的地理位置不同而有差异。</p>
-
-    <div id="listnav">
-        <ul>
-            <li>第</li>
-            <li><a id="p1" href="/proxylist/1/">1</a></li>
-            <li><a id="p2" href="/proxylist/2/">2</a></li>
-            <li><a id="p3" href="/proxylist/3/">3</a></li>
-            <li><a id="p4" href="/proxylist/4/">4</a></li>
-            <li><a id="p5" href="/proxylist/5/">5</a></li>
-            <li><a id="p6" href="/proxylist/6/">6</a></li>
-            <li><a id="p7" href="/proxylist/7/">7</a></li>
-            <li><a id="p8" href="/proxylist/8/">8</a></li>
-            <li><a id="p9" href="/proxylist/9/">9</a></li>
-            <li><a id="p10" href="/proxylist/10/">10</a></li>
-            <li>页</li>
-        </ul>
-    </div>
-</div>
-
-<div class="btn center"><a id="tobuy" href="/free/">更多免费代理</a></div>
-
-</div>
-
-
-
-<div id="footer2">
-    <div class="container">
-        <div class="copyright">© 2013 - 2016 Kuaidaili.com 版权所有</div>
-        <div class="footnav"><a href="/about/">关于我们</a><span>|</span><a href="/privacy/">隐私政策</a><span>|</span><a href="http://blog.kuaidaili.com/" target="_blank">官方博客</a><span>|</span><a href="/sitemap.xml">网站地图</a><span>|</span><a href="http://help.kuaidaili.com" target="_blank">帮助中心</a></div>
-        <div class="icon">
-           <a href="https://ss.knet.cn/verifyseal.dll?sn=e161117110108652324qkr000000&ct=df&a=1&pa=0.3305956236561214" target="_blank" title="可信网站"><img height="40" src="http://img.kuaidaili.com/img/kxlogo.png" alt="可信网站" /></a>
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+            <meta name="keywords" content="免费代理,蚂蚁代理,代理服务器,高速http代理,IP提取器,爬虫代理,ip代理,国外代理服务器,免费代理服务器,免费代理ip,高匿代理ip,免费代理ip,代理服务器ip,代理地址,代理列表,最新免费代理ip"/>
+    <meta name="description" content="免费代理|蚂蚁代理|代理服务器|高速http代理|IP提取器|爬虫代理|ip代理|国外代理服务器|免费代理服务器|免费代理ip|高匿代理ip|最新代理ip|免费代理ip|代理服务器ip|代理服务|代理地址|代理列表|最新免费代理ip" />
+    <title>免费代理-蚂蚁代理-最新免费代理ip,高质量代理ip</title>
+        <!-- Bootstrap -->
+        <link href="http://static.mayidaili.com/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="http://static.mayidaili.com/css/selectize.bootstrap3.css" rel="stylesheet"/>
+        <link href="http://static.mayidaili.com/css/highlight.css" rel="stylesheet"/>
+        <link href="http://www.mayidaili.com/css/style.css?v=1.0.5" rel="stylesheet"/>
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="http://static.mayidaili.com/js/html5shiv.min.js"></script>
+        <script src="http://static.mayidaili.com/js/respond.min.js"></script>
+        <script src="http://static.mayidaili.com/js/placeholders.min.js"></script>
+        <script src="http://static.mayidaili.com/js/json2.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+            <!-- black line from top -->
+    <div class="header-line"></div>
+     <div class="container">
+     	<div class="row mt10">
+     		<div class="col-md-7 text-right">
+     		     		</div>
+     		<div class="col-md-2 text-right">
+     		     		</div>
+     		<div class="col-md-3 text-right">
+     			        QQ群：424699147 <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=7a4828611af5747b8203fe79b27710fb723be2a7b23f423ba7ad91ae2ba67d1d">
+            			<img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="点此加入蚂蚁代理官方QQ群" title="加群请写明原由" data-toggle="tooltip" data-placement="left"></a>
+     		</div>
+     	</div>
+     </div>
+    <nav class="navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                	<div class="pull-left"><img src="http://static.mayidaili.com/img/logo.png" width="50" height="50" /></div>
+                	<div class="pull-left logo-text">蚂蚁代理</div>
+                </div>
+                <div class="col-md-8">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="http://www.mayidaili.com/">首页</a>
+                        </li>
+                        <li class="">
+                            <a href="http://www.mayidaili.com/dynamic">高质量动态代理</a>
+                        </li>
+                        <li class="active">
+                            <a href="http://www.mayidaili.com/free">免费代理</a>
+                        </li>
+                        <li class="">
+                                                    </li>
+                        <li class="">
+                            <a href="http://www.mayidaili.com/share/">每日分享</a>
+                        </li>
+                        <li class="">
+                            <a href="http://www.mayidaili.com/baike/">代理百科</a>
+                        </li>
+                        <li class="">
+                            <a href="http://www.mayidaili.com/proxy/check-online/">在线检测</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </nav>
+        <div class="page-free-banner">
+            <div class="container">
+                <h1>免费代理</h1>
+                <p>免费代理都是通过扫描网络上的公共代理得来，由于没有用户名和密码认证，用的人特别多，故称“万人骑”，因此在速度和稳定性上都没有保障</p>
+				<p>本站免费代理均可免费查询使用，免费代理本身并不收费，但是如果您需要API批量获取接口，请购买API接口服务，<u>注意：通过API接口获取到的代理IP的质量与在线查询的一样</u></p>
+                <p>实时扫描免费代理数量：<strong class="fz20">48761</strong></p>
+            </div>
+        </div>
+        <div class="container">
+			<ol class="breadcrumb text-right">
+			  <li class="active">搜索免费代理</li>
+			  <li><a href="http://www.mayidaili.com/free/api-link">生成API连接</a></li>
+			  <li><a href="http://www.mayidaili.com/free/buy-api">购买API接口</a></li>
+			</ol>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                    	<p class="nav-title-sm">按匿名度选择</p>
+                    	<div class="p5">
+							<a class="free-tags" href="http://www.mayidaili.com/free/anonymous/高匿">高匿</a>
+							<a class="free-tags" href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+							<a class="free-tags" href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+						</div>
+                    	<p class="nav-title-sm">按类型选择</p>
+                    	<div class="p5">
+							<a class="free-tags" href="http://www.mayidaili.com/free/education">高校代理</a>
+						</div>
+                    	<p class="nav-title-sm">按端口选择</p>
+                    	<div class="p5">
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8081">8081</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8099">8099</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/9100">9100</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/23">23</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1453">1453</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/1518">1518</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/3127">3127</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8008">8008</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8085">8085</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/port/8808">8808</a>
+							</br>
+                    		<a class="free-tags" href="http://www.mayidaili.com/free/fiveport">随机五位端口</a>
+                    	</div>
+                    	<p class="nav-title-sm">按地区选择</p>
+                    	<div class="free-bylocation">
+							<select id="location_select_free" style="width:100%;" placeholder="输入关键字查找"></select>
+	                        <script>var hotLocations=[{"alias":"asia,yazhou,yz,亚洲","fullstyle":"亚洲","id":"1-6255147"},{"alias":"africa,feizhou,fz,非洲","fullstyle":"非洲","id":"1-6255146"},{"alias":"north america,beimeizhou,bmz,北美洲","fullstyle":"北美洲","id":"1-6255149"},{"alias":"china,zhongguo,zg,中国","fullstyle":"亚洲,中国","id":"2-1814991"},{"alias":"united states,meiguo,mg,美国","fullstyle":"北美洲,美国","id":"2-6252001"},{"alias":"russia,eluosi,els,俄罗斯","fullstyle":"欧洲,俄罗斯","id":"2-2017370"},{"alias":"北京市,beijingshi,bjs,北京市","fullstyle":"中国,北京市","id":"3-2038349"},{"alias":"上海市,shanghaishi,shs,上海市","fullstyle":"中国,上海市","id":"3-1796231"},{"alias":"广州市,guangzhoushi,gzs,广州市","fullstyle":"广东省,广州市","id":"4-1809857"}];</script>
+                    	</div>
+						<div class="p5">
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/浙江省-3-1784764">浙江省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/北京市-3-2038349">北京市</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/山东省-3-1796328">山东省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/河南省-3-1808520">河南省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/福建省-3-1811017">福建省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/江苏省-3-1806260">江苏省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/上海市-3-1796231">上海市</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/江西省-3-1806222">江西省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/广东省-3-1809935">广东省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/湖南省-3-1806691">湖南省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/辽宁省-3-2036115">辽宁省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/四川省-3-1794299">四川省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/贵州省-3-1809445">贵州省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/云南省-3-1785694">云南省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/黑龙江省-3-2036965">黑龙江省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/广西壮族自治区-3-1809867">广西壮族自治区</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/陕西省-3-1796480">陕西省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/重庆市-3-1814905">重庆市</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/河北省-3-1808773">河北省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/湖北省-3-1806949">湖北省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/内蒙古自治区-3-2035607">内蒙古自治区</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/吉林省-3-2036500">吉林省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/安徽省-3-1818058">安徽省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/山西省-3-1795912">山西省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/新疆维吾尔自治区-3-1529047">新疆维吾尔自治区</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/甘肃省-3-1810676">甘肃省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/天津市-3-1792943">天津市</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/海南省-3-1809054">海南省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/青海省-3-1280239">青海省</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/宁夏回族自治区-3-1799355">宁夏回族自治区</a>
+	                    	<a class="free-tags" href="http://www.mayidaili.com/free/location/西藏自治区-3-1279685">西藏自治区</a>
+							<a class="free-tags" href="http://www.mayidaili.com/free/location/台湾省-2-1668284">台湾省</a>
+						</div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>IP地址</th>
+                            <th>端口</th>
+                            <th>匿名度</th>
+                            <th>所在国家/地区</th>
+                            <th>地理位置</th>
+                            <th>连接时间</th>
+                            <th>上次验证时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>122.72.32.82
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/49284/wsREIP3Xx0-c5J7Qx6egJA" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,重庆市-3-1814905">重庆市</a>
 
-<ul class="onMShow" style="display: block;">
-  <li>
-    <a href="/support/"><br>
-      <span class="bt1"></span>
-      <div>提交工单</div>
-    </a>
-  </li>
-  <li>
-    <a href="tel:010-57216816"><br>
-      <span class="bt2"></span>
-      <div class="two">客服电话：010-57216816<br/>周一至周六 9:00-18:00</div>
-    </a>
-  </li>
-  <li>
-    <a href="http://wpa.qq.com/msgrd?v=3&uin=2162481273&site=qq&menu=yes"><br>
-      <span class="bt3"></span>
-      <div class="two">客服QQ：2162481273<br/>周一至周六 9:00-18:00</div>
-    </a>
-  </li>
+
+							</td>
+                            <td>
+                                <span class="label label-success">131</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>222.187.32.174
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/21979/L9zUyjxPvfThHLWA5L_ULQ" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省,徐州市-4-1787823">徐州市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">71</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>61.157.126.45
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/61664/AyLxLclBXtxgUTQ9jK-3-Q" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,四川省-3-1794299">四川省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,四川省,成都市-4-1815285">成都市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">114</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>121.201.31.9
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/29858/FsoSw0CEFGbq6Tk9HfLF4g" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,广东省-3-1809935">广东省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,广东省,中山市-4-1784313">中山市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">91</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>112.25.33.26
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/8113/SnOeWAtg45plImMrohAL7w" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省,南京市-4-1799960">南京市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">62</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>36.80.34.225
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/52901/in6kjNZBnyZFaLaLGqlmjQ" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/ID.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/印度尼西亚-2-1643084">印度尼西亚</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-warning">1076</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>112.90.147.142
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/56774/X4XQi_NSU-iPTeAClnHFvA" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,广东省-3-1809935">广东省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,广东省,珠海市-4-1783950">珠海市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">83</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>202.59.163.129
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/6052/I__6hMTxSdTcfSWr9qtSeg" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/ID.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/印度尼西亚-2-1643084">印度尼西亚</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/印度尼西亚,万丹省-3-1923045">万丹省</a>
+									<a href="http://www.mayidaili.com/free/location/印度尼西亚,万丹省,Nusa-4-1960732">Nusa</a>
+
+							</td>
+                            <td>
+                                <span class="label label-danger">1826</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14.207.12.132
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/53016/avZCahquSV4d2G12hfiJ1A" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/TH.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/泰国-2-1605651">泰国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/泰国,Bangkok-3-1609348">Bangkok</a>
+									<a href="http://www.mayidaili.com/free/location/泰国,Bangkok,曼谷-4-1609350">曼谷</a>
+
+							</td>
+                            <td>
+                                <span class="label label-danger">3518</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>113.18.193.19
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/16592/g9Hj-Adz5EXnFJfcnRfk0A" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/普匿">普匿</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,福建省-3-1811017">福建省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,福建省,福州市-4-1810815">福州市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">95</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>221.228.64.56
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/51177/Ntdamh6csdryFUFM6kdqlw" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省-3-1806260">江苏省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,江苏省,无锡市-4-1790902">无锡市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">66</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>60.195.204.249
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/58589/9Bav3RNkkORjOnWKL6pspA" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,北京市-3-2038349">北京市</a>
+
+
+							</td>
+                            <td>
+                                <span class="label label-danger">2355</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>189.50.14.169
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/30201/pPJlWsWgcp4Zk1yQRJ2u_w" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/BR.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/巴西-2-3469034">巴西</a>
+                            </td>
+                            <td>
+
+
+
+							</td>
+                            <td>
+                                <span class="label label-success">715</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>60.195.117.245
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/34331/R7fXSoUzUJ-3OVGAMM4tSw" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,北京市-3-2038349">北京市</a>
+
+									<a href="http://www.mayidaili.com/free/location/中国,北京市,,海淀区-5-1809103">海淀区</a>
+							</td>
+                            <td>
+                                <span class="label label-danger">2013</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>111.1.61.54
+							</td>
+                            <td>
+								<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/8218/AbtUCh3HB1w8ViuHWfVQAw" />
+							</td>
+                            <td>
+                                    <a href="http://www.mayidaili.com/free/anonymous/透明">透明</a>
+                            </td>
+                            <td>
+                                <img width="16" height="11" src="http://static.mayidaili.com/img/flags/CN.png" class="mr5" />
+                                    <a href="http://www.mayidaili.com/free/location/中国-2-1814991">中国</a>
+                            </td>
+                            <td>
+									<a href="http://www.mayidaili.com/free/location/中国,浙江省-3-1784764">浙江省</a>
+									<a href="http://www.mayidaili.com/free/location/中国,浙江省,杭州市-4-1808925">杭州市</a>
+
+							</td>
+                            <td>
+                                <span class="label label-success">67</span>
+                                ms
+							</td>
+                            <td>
+                                <time class="timeago">刚刚</time>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+				<div class="text-right">
+
+
+<nav>
+    <ul class="pagination">
+
+<li class="active">
+        <a href="http://www.mayidaili.com/free/1">1</a>
+</li>
+<li >
+        <a href="http://www.mayidaili.com/free/2">2</a>
+</li>
+
+
+<li >
+        <a href="http://www.mayidaili.com/free/3">3</a>
+</li>
+<li >
+        <a href="http://www.mayidaili.com/free/4">4</a>
+</li>
+<li >
+        <a href="http://www.mayidaili.com/free/5">5</a>
+</li>
+<li >
+        <a href="http://www.mayidaili.com/free/6">6</a>
+</li>
+<li >
+        <a href="http://www.mayidaili.com/free/7">7</a>
+</li>
+        <li class="dotitem">
+            <a href="javascript:void(0)">...</a>
+        </li>
+
+    <li >
+            <a href="http://www.mayidaili.com/free/3217">3217</a>
+    </li>
+    <li >
+            <a href="http://www.mayidaili.com/free/3218">3218</a>
+    </li>
+
+        <li>
+            <a href="http://www.mayidaili.com/free/2">»</a>
+        </li>
 </ul>
-<a href="#top" id="top_btn" class="label btt" style="display:none;"><span class="icon-chevron-up icon-white"></span></a>
-
-
-<!--[if lt IE 8]><link rel="stylesheet" href="http://img.kuaidaili.com/css/ie.css?v=2" media="screen" /><![endif]-->
-<script language="javascript" type="text/javascript" src="http://img.kuaidaili.com/js/all.js?v=20"></script>
-
-<script type="text/javascript">
-$("tbody tr:nth-child(odd)").addClass("odd");
-$(document).ready(function() {
-    if(window.location.pathname.indexOf("/proxylist/") != -1)
-        jumpToAnchor("freelist");
-    $("#p1").addClass("active");
-});
-</script>
-
-<script type="text/javascript">
-
-var menu = "menu_list";
-if(menu) $('#'+menu).addClass('active');
-var ucm = "";
-if(ucm){
-    $('#ucm_'+ucm).addClass('active');
-    $('#ucm_'+ucm+' a i').addClass('icon-white');
-}
-
+</nav>
+				</div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        <div class="footer">
+    	<div class="container">
+    			<p>友情链接: <a href="http://www.ip181.com/" target="_blank">代理IP检测平台</a></p>
+            	<p>警告：禁止利用本站资源从事任何违反本国（地区）法律法规的活动</p>
+            	<p>©2015 蚂蚁代理 | 京ICP备13036930号-2</p>
+        </div>
+        <script src="http://static.mayidaili.com/js/jquery.min.js"></script>
+        <script src="http://static.mayidaili.com/js/bootstrap.min.js"></script>
+        <script src="http://static.mayidaili.com/js/selectize.min.js"></script>
+        <script src="http://static.mayidaili.com/js/jquery.sticky.js"></script>
+        <script src="http://static.mayidaili.com/js/highlight.pack.js"></script>
+        <script src="http://www.mayidaili.com/js/main.js?v=1.0.5"></script>
+        <script>var basePath="http://www.mayidaili.com";var staticPath="http://static.mayidaili.com";</script>
+        <script>
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?7ed65b1cc4b810e9fd37959c9bb51b31";
+  hm.src = "//hm.baidu.com/hm.js?dad083bfc015b67e98395a37701615ca";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
-
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','http://img.kuaidaili.com/ga/analytics.js','ga');
-ga('create', 'UA-76097251-1', 'auto');
-ga('send', 'pageview');
-
 </script>
-
-
-</body>
+</div>
+		<script language="javascript">
+		$(function(){
+			document.cookie="proxy_token=FVoLBwIF;path=/";
+			$("img.js-proxy-img").each(function(index,item){
+				$(this).attr("src",$(this).attr("data-uri")).removeAttr("data-uri");;
+			});
+		});
+		</script>
+    </body>
 </html>
 
 """
@@ -409,10 +734,11 @@ def test(page):
     # ips = getIPfromPage(page, portrule=r"""%s</td>\n<td style="WIDTH:40PX">(\d+)""")
     # print ips
     # print len(ips)
-    rule=r"""%s</td>\s+<td data-title="PORT">(\d+)""" % ('121.232.147.126')
+    # rule=r"""%s</td>\n<td><img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""" % ('203.192.12.146')
+    # rule=r"""%s\n(.)""" % ('122.72.32.82')
+    rule="""222.187.32.174</td>\n<td>\n<img width="80" height="20" class="js-proxy-img" data-uri="http://www.mayidaili.com/free/img/1/21979/L9zUyjxPvfThHLWA5L_ULQ" /></td>"""
 
-
-    port = re.search(rule,page).groups()[0]
-    print 'port is',port
+    port = re.search(rule,page).groups()
+    print 'port is',port,':',len(port)
 
 test(texto)

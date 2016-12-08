@@ -83,20 +83,21 @@ class ConnectTool:
 			# 	print 'Value = '+item.value
 			msg=response.read()
 			
-			chardit1 = chardet.detect(msg)
-			the_page = str(msg)
+			# chardit1 = chardet.detect(msg)
+			# the_page = str(msg)
+            #
+			#
+            #
+			#
+			# try:
+			# 	return temp.decode(chardit1['encoding']).encode('utf-8'),the_page.decode(chardit1['encoding']).encode('utf-8')
+            #
+			# except Exception,e:
+			# 	return temp,the_page
 
-			
+			return temp,msg
 
-			
-			try:
-				return temp.decode(chardit1['encoding']).encode('utf-8'),the_page.decode(chardit1['encoding']).encode('utf-8')
 
-			except Exception,e:
-				return temp,the_page
-			
-#		response = urllib2.urlopen('http://www.baidu.com',timeout=10)
-#		print 'head is %s' % response.info()
 
 		except Exception,e:
 			msgg=None

@@ -20,112 +20,15 @@
   简单的基于网页的代理
 ## 识别情况
 
-<table style="height: 324px; width: 557px;" border="1" cellspacing="0" cellpadding="0">
-<tbody>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">&nbsp;</span></p>
-</td>
-<td style="text-align: center;">
-<p lang="en-US"><span style="font-size: 15px;">REMOTE_ADDR</span></p>
-</td>
-<td style="text-align: center;">
-<p lang="en-US"><span style="font-size: 15px;">HTTP_X_FORWARDED_FOR</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">隐藏身份</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">识别难度</span></p>
-</td>
-</tr>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">未使用代理</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">真实<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">无</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">无</span></p>
-<iframe id="tmp_downloadhelper_iframe" style="display: none;"></iframe></td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">&nbsp;</span></p>
-</td>
-</tr>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">透明代理</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">代理<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">真实<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">无</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">易</span></p>
-</td>
-</tr>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">匿名代理</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">代理<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">代理<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">是</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">易</span></p>
-</td>
-</tr>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">欺诈代理</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">代理<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">随机<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">是</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">易</span></p>
-</td>
-</tr>
-<tr>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">高匿名代理</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;" lang="zh-CN">代理<span lang="en-US">IP</span></span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">无</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">是</span></p>
-</td>
-<td style="text-align: center;">
-<p><span style="font-size: 15px;">难</span></p>
-</td>
-</tr>
-</tbody>
-</table>
+|&nbsp;|REMOTE_ADDR|HTTP_X_FORWARDED_FOR|隐藏身份|识别难度|
+|---|---|---|---|---|
+|未使用代理|真实IP|无|无|&nbsp;|
+|透明代理|代理IP|真实IP|无|易|
+|匿名代理|代理IP|代理IP|是|易|
+|欺诈代理|代理IP|随机IP|是|易|
+|高匿名代理|代理IP|无|是|难|
+
+
 ##三.策略
 总体策略:黑名单()
 
@@ -183,3 +86,16 @@
 
 
 
+###图片识别库安装pytesser
+
+参考链接 [http://www.tuicool.com/articles/E3MNziM](http://www.tuicool.com/articles/E3MNziM)
+<pre>
+sudo apt-get install libpng12-dev
+sudo apt-get install libjpeg62-dev
+sudo apt-get install libtiff4-dev
+sudo apt-get install zlibg-dev
+sudo apt-get install pillow
+sudo apt-get install imagemagick libmagickwand-dev
+sudo pip install pytesseract
+sudo apt-get install tesseract-ocr
+</pre>

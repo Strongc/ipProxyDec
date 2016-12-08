@@ -14,3 +14,5 @@ def getdatafromFile():
 def taskinit():
     getdatafromFile()
 
+if __name__ == "__main__":
+    getdatafromFile()

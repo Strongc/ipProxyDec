@@ -1,63 +1,39 @@
-#-*- coding:utf-8 -*-
-#!/usr/bin/env python2.7
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+#!/usr/bin/python
+# coding:utf-8
 
-from pyv8 import PyV8
-import re
-import time
+from keras.models import Sequential
+from keras.layers.core import Dense, Dropout, Activation
+from keras.optimizers import SGD
+from keras.datasets import mnist
+import numpy
 
-import requests
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+model = Sequential()
+model.add(Dense(784, 500, init='glorot_uniform')) # 输入层，28*28=784
+model.add(Activation('tanh')) # 激活函数是tanh
+model.add(Dropout(0.5)) # 采用50%的dropout
 
+model.add(Dense(500, 500, init='glorot_uniform')) # 隐层节点500个
+model.add(Activation('tanh'))
+model.add(Dropout(0.5))
 
-#访问首页时，接受服务器发送来的set-cookie中的__cfduif的cookie
-s = requests.session()
-r = s.get("http://www.vegnet.com.cn",headers = headers)
-presetcookie = r.headers['set-cookie']
-sentcookie1st = dict(__cfduid = presetcookie.split(";")[0].split("=")[1])
+model.add(Dense(500, 10, init='glorot_uniform')) # 输出结果是10个类别，所以维度是10
+model.add(Activation('softmax')) # 最后一层用softmax
 
-###########解析页面中的js代码，放到v8中执行##################################
-from bs4 import BeautifulSoup
-soup = BeautifulSoup(r.text,'lxml')
-pass_value = soup.find(attrs={'name': 'pass'}).get('value')
-jschl_vc_value = soup.find(attrs={'name': 'jschl_vc'}).get('value')
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True) # 设定学习率（lr）等参数
+model.compile(loss='categorical_crossentropy', optimizer=sgd, class_mode='categorical') # 使用交叉熵作为loss函数
 
-#tempstr 存储以下形式的字符串
-#rkJsjKz.KvWrlLpzwg-=!+[]+!![]+!![]+!![]+!![]+!![]+!![];rkJsjKz.KvWrlLpzwg*=+((!+[]+!![]+!![]+[])+(!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![]+!![]));rkJsjKz.KvWrlLpzwg+=+((!+[]+!![]+!![]+!![]+[])+(!+[]+!![]+!![]));rkJsjKz.KvWrlLpzwg-=+((!+[]+!![]+!![]+[])+(+!![]))
-tempstr =''
-a = re.search('var s,t,o,p,b,r,e,a,k,i,n,g,f, (\w+)={"(\w+)":(.*)};',r.text)
-dictname, key, value  = a.group(1), a.group(2), a.group(3)
-a = re.search(';(.*;)a\.value',r.text)
-tempstr = dictname +'.'+key + '=' + value +";"+ a.group(1)
+(X_train, y_train), (X_test, y_test) = mnist.load_data() # 使用Keras自带的mnist工具读取数据（第一次需要联网）
 
-#进入v8
-ctxt = PyV8.JSContext()
-ctxt.enter()
-#拼凑js代码
-oo = "(function(){var "+ dictname + "={'"+ key +"':''};"+tempstr+"return "+dictname+"."+key+";})"
-func = ctxt.eval(str(oo))
-#对应a.value = parseInt(rkJsjKz.KvWrlLpzwg, 10) + t.length中的t.lendth也就是域名的长度
-jschl_answer_value = str(func()+len("www.vegnet.com.cn"))
+X_train = X_train.reshape(X_train.shape[0], X_train.shape[1] * X_train.shape[2]) # 由于mist的输入数据维度是(num, 28, 28)，这里需要把后面的维度直接拼起来变成784维
+X_test = X_test.reshape(X_test.shape[0], X_test.shape[1] * X_test.shape[2])
+Y_train = (numpy.arange(10) == y_train[:, None]).astype(int) # 参考上一篇文章，这里需要把index转换成一个one hot的矩阵
+Y_test = (numpy.arange(10) == y_test[:, None]).astype(int)
 
-payload = {
-    'pass':pass_value,
-    'jschl_vc':jschl_vc_value,
-    'jschl_answer':jschl_answer_value,
-
-}
-
-#很关键，需要进行5秒钟休眠
-time.sleep(5)
-
-requesturl = "http://www.vegnet.com.cn/cdn-cgi/l/chk_jschl"
-#allow_redirects ＝ False不要让requests来自动处理302的跳转
-r = requests.get(requesturl,allow_redirects=False,cookies = sentcookie1st, headers= headers, params = payload )
-print r.status_code
-#获取cf_clearance这个cookie
-presetcookie = r.headers['set-cookie']
-sentcookie2nd = {'cf_clearance':presetcookie.split(";")[0].split("=")[1]}
-
-r = requests.get("http://www.vegnet.com.cn/",cookies = sentcookie2nd, headers = headers)
-print r.status_code
+# 开始训练，这里参数比较多。batch_size就是batch_size，nb_epoch就是最多迭代的次数， shuffle就是是否把数据随机打乱之后再进行训练
+# verbose是屏显模式，官方这么说的：verbose: 0 for no logging to stdout, 1 for progress bar logging, 2 for one log line per epoch.
+# 就是说0是不屏显，1是显示一个进度条，2是每个epoch都显示一行数据
+# show_accuracy就是显示每次迭代后的正确率
+# validation_split就是拿出百分之多少用来做交叉验证
+model.fit(X_train, Y_train, batch_size=200, nb_epoch=100, shuffle=True, verbose=1, show_accuracy=True, validation_split=0.3)
+print 'test set'
+model.evaluate(X_test, Y_test, batch_size=200, show_accuracy=True, verbose=1)

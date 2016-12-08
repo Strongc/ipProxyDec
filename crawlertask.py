@@ -24,9 +24,11 @@ class crawlerTask(TaskTool):
         self.__sqltool=Sqldatatask.getObject()
         self.config=config.Config
     def task(self,req,threadname):
+        rules=req[1]
 
-        result=crawlercore.getStaticHtml(req)
-        ips=crawlercore.getIPfromPage(result)
+        result=crawlercore.getStaticHtml(path=req[0])
+        ips=crawlercore.getIPfromPage(page=result,rules=rules)
+
         self.__sqltool.add_work(list(ips))
 
         return None
@@ -34,9 +36,9 @@ if __name__ == "__main__":
 
     for website in config.proxysource:
         for item in crawlercore.ruletowebsite(website):
-            result = crawlercore.getStaticHtml(item)
+            result = crawlercore.getStaticHtml(path=item[0])
 
-            ips = crawlercore.getIPfromPage(result,portrule=website[4])
+            ips = crawlercore.getIPfromPage(page=result,rules=website)
             print ips
             print len(ips)
 
