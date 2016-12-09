@@ -1,15 +1,31 @@
 #!/usr/bin/python
 #coding:utf-8
 
-import urllib2
+import urllib2,httplib
 import urllib
 import time
 import socket
 
 ip_check_url = 'http://www.baidu.com/'
 user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20100101 Firefox/12.0'
-socket_timeout = 30
-
+socket_timeout = 5
+def check_http(protocol, pip):
+    data=pip.split(':')
+    ip=data[0]
+    port=data[1]
+    try:
+        conn = httplib.HTTPConnection(host=ip,port=port, timeout=socket_timeout)
+        conn.request(method='HEAD', url=ip_check_url)
+        res = conn.getresponse()
+        result= str(res.getheaders())
+        if result.find('bfe')>0:
+            print 'check_http',ip,port
+            return True
+        else:
+            return False
+    except Exception, e:
+        print e
+        return False
 # Check proxy
 def check_http_proxy(protocol, pip):
     proxy_detected=False
@@ -25,11 +41,16 @@ def check_http_proxy(protocol, pip):
         conn = urllib2.urlopen(req)
         time_end = time.time()
 
-        result= conn.read()
-        print result
+        result= str(conn.info())
+        if  result.find('bfe')>0:
+            print 'check_http_proxy', pip
+
+
         # print detected_pip
-        proxy_detected = True
-        return True
+            proxy_detected = True
+            return True
+        else:
+            return False
     except urllib2.HTTPError, e:
         print "ERROR: Code ", e.code
         return False
@@ -61,7 +82,15 @@ def proxy_check(potocol,ip,port):
     if potocol=='http':
         protocol = "http"
         current_proxy = ip+':'+str(port)
-        proxy_detected = check_http_proxy(protocol, current_proxy)
+        start_time = time.time()
+
+
+        proxy_detected = check_http(protocol, current_proxy)
+        print 'training check_http_proxy took %fs!' % (time.time() - start_time),ip
+        # start_time = time.time()
+        # proxy_detected = check_http(protocol, current_proxy)
+        # print 'training check_http took %fs!' % (time.time() - start_time),ip
+
     else:
         proxy_detected=socket_check(potocol,ip,port)
 
@@ -98,5 +127,7 @@ def socket_check(potocol,ip,port):
         return False
 if __name__ == '__main__':
     start_time = time.time()
-    socket_check()
+
+
+    check('http','124.128.221.27','8080')
     print 'training took %fs!' % (time.time() - start_time)

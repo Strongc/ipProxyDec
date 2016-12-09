@@ -37,7 +37,7 @@ def getIPfromPage(page,rules=None):
             # template=re.compile(prule)
             # port =template.findall(page)
             port=re.search(prule, page).groups()[0]
-
+            # print port
             # report= re.compile(prule)
             # print prule
             # print report

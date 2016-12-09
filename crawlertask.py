@@ -28,8 +28,8 @@ class crawlerTask(TaskTool):
 
         result=crawlercore.getStaticHtml(path=req[0])
         ips=crawlercore.getIPfromPage(page=result,rules=rules)
-
-        self.__sqltool.add_work(list(ips))
+        ipsall=[list(ips)]
+        self.__sqltool.add_work(ipsall)
 
         return None
 if __name__ == "__main__":

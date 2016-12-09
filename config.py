@@ -22,10 +22,10 @@ class Config(object):
 # 第八个 端口图片抓取规则
 proxysource=[
 # ('http://31f.cn/socks-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','socks5','0'),
-# ('http://31f.cn/http-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','http','0'),
+('http://31f.cn/http-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','http','0'),
 # ('http://31f.cn/https-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','https','0'),
 # ('http://www.proxy360.cn/default.aspx','','','',r"""<span class="tbBottomLine" style="width:140px;">\s+%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'https','0'),
-# ('http://www.nianshao.me/?page=%s','1','1','',r"""%s</td>\n<td style="WIDTH:40PX">(\d+)""",'http','0'),存在问题
+# ('http://www.nianshao.me/?page=%s','1','6','',r"""%s</td>\r\s<td style="WIDTH:40PX">(.*)</td>""",'http','0'),
 # ('http://ip.baizhongsou.com/', '', '','',r"""%s:(\d+)""",'http','0'),
 
 # ('http://www.3464.com/data/Proxy/Socks5/', '', '','',r"""%s</td><td>(\d+)""" ,'socks5','0'),

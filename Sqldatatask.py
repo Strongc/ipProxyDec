@@ -24,10 +24,10 @@ class SqlDataTask(TaskTool):
 	def task(self,req,threadname):
 		# print threadname+'数据库任务　执行任务中'+str(datetime.datetime.now())
 		#req 格式类型 req[0] ip,req[1] port
-		print req
-		listarray=[]
-		listarray.append(req)
-		self.sqlhelp.replaceinserttableinfo_byparams(table='proxy',select_params=['ip','port'],insert_values=listarray)
+		# print req
+		# listarray=[]
+		# listarray.append(req)
+		self.sqlhelp.replaceinserttableinfo_byparams(table='proxy',select_params=['ip','port'],insert_values=req)
 		# print threadname+'数据库任务　结束'+str(datetime.datetime.now())
 
 
