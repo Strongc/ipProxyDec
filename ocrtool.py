@@ -3,39 +3,36 @@
 
 
 
-
+import pickle
 
 import os, urllib2
 import uuid
+from PIL import Image
+from PIL import ImageEnhance
+
+import numpy as np
+import pytesseract
+
 def getuuid():
-
     return uuid.uuid1()
-def downloadFile(data,name=None,type=None,url=None):
-    path=''
-    if name is not None:
-        path = os.path.split(os.path.realpath(__file__))[0]+'/' + name
-    else:
-        name=url.split('/')[-1]
-        if type is None:
 
+
+def downloadFile(data, name=None, type=None, url=None):
+    path = ''
+    if name is not None:
+        path = os.path.split(os.path.realpath(__file__))[0] + '/' + name
+    else:
+        name = url.split('/')[-1]
+        if type is None:
 
             path = os.path.split(os.path.realpath(__file__))[0] + '/download/' + name
         else:
 
-            path = os.path.split(os.path.realpath(__file__))[0] + '/download/' + name+type
+            path = os.path.split(os.path.realpath(__file__))[0] + '/download/' + name + type
     localpic = open(path, "wb")
     localpic.write(data)
     localpic.close()
     return path
-
-
-
-
-import Image
-from PIL import Image
-from PIL import ImageEnhance
-
-import pytesseract
 
 
 
@@ -50,8 +47,6 @@ def figure_pic(path=None):
     vcode = pytesseract.image_to_string(image)
 
     print vcode
-
-
 
 
 def getcutcolor(im):
@@ -118,7 +113,6 @@ def cut(im):
     return newIm
 
 
-import numpy as np
 
 
 def cutdigit(im, name, path):
@@ -140,7 +134,7 @@ def cutdigit(im, name, path):
 
 
 pkl_file = None
-import pickle
+
 
 
 def getModel():
@@ -189,7 +183,7 @@ def getverifyimg(name, path=None):
     # im.show()
 
     num = cutdigit(im, name, path)
-    print '识别的结果为',name, num
+    print '识别的结果为', name, num
     return num
     # im.save(path+'/step1_'+name)
 
@@ -202,8 +196,6 @@ def getverifyimg(name, path=None):
 import time
 
 if __name__ == "__main__":
-
-
     start_time = time.time()
 
     getverifyimg('9011')
