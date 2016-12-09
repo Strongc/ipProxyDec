@@ -12,7 +12,8 @@ import multiprocessing
 
 import gevent
 from gevent import monkey
-monkey.patch_all()
+from gevent import  sleep
+# monkey.patch_all()
 stack_size(32768*16)
 class ThreadTool:
 	def __init__(self,isThread=1,needfinishqueue=0,deamon=True):
@@ -164,6 +165,7 @@ class ThreadTool:
 		if self.isThread==1:
 			for i in range(sizenumber):
 				t=Thread(target=self.getTask)
+
 				t.Daemon=self.deamon
 				t.start()
 				self.Threads.append(t)
@@ -250,10 +252,11 @@ class ThreadTool:
 			# 	print threadname+'关闭'
 			# 	break
 			# try:
-			# 	req = self.q_request.get(block=True,timeout=60*5)
+			# 	req = self.q_request.get(block=True,timeout=5)
 			# except:
 			# 	break
 			req = self.q_request.get()
+
 			with self.lock:				#要保证该操作的原子性，进入critical area
 				self.running=self.running+1
 
@@ -289,9 +292,10 @@ class ThreadTool:
 			# 		self.alivenum-=1
 			# 	print threadname+'关闭'
 			# 	break
-
-			req = self.q_request.get()
-
+			try:
+				req = self.q_request.get()
+			except:
+				break
 			with self.lock:				#要保证该操作的原子性，进入critical area
 				self.running=self.running+1
 

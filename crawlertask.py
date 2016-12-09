@@ -5,7 +5,7 @@ import datetime,config
 import time
 import connectpool
 from TaskTool import TaskTool
-
+import proxytask
 import webtool
 import config
 import crawlercore
@@ -14,22 +14,33 @@ snifferinstance=None
 def getObject():
     global snifferinstance
     if snifferinstance is None:
-        snifferinstance=crawlerTask(2)
+        snifferinstance=crawlerTask(1)
         snifferinstance.set_deal_num(5)
     return snifferinstance
 class crawlerTask(TaskTool):
     def __init__(self,isThread=1,logger=None):
         TaskTool.__init__(self,isThread)
         self.logger = logger
-        self.__sqltool=Sqldatatask.getObject()
+        # self.__sqltool=Sqldatatask.getObject()
         self.config=config.Config
+        self.proxytask=proxytask.getObject()
     def task(self,req,threadname):
         rules=req[1]
 
         result=crawlercore.getStaticHtml(path=req[0])
         ips=crawlercore.getIPfromPage(page=result,rules=rules)
-        ipsall=[list(ips)]
-        self.__sqltool.add_work(ipsall)
+
+        self.proxytask.add_work([list(ips)])
+
+
+
+        # protocol=rules[5]
+        # ipsall=[list(ips)]
+        # self.__sqltool.add_work(ipsall)
+
+
+
+
 
         return None
 if __name__ == "__main__":

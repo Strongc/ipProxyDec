@@ -57,11 +57,14 @@ def getIPfromPage(page,rules=None):
                 port=ocrtool.getverifyimg(name=picpath)
 
 
-        print ip,port
 
-        listary=checkproxy.check(rules[5],ip,port)
-        for i in listary:
-            iplist.add(i)
+        iplist.add((ip,port,rules[5]))
+
+
+
+        # listary=checkproxy.check(rules[5],ip,port)
+        # for i in listary:
+        #     iplist.add(i)
 
 
     return iplist
