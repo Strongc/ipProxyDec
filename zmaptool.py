@@ -32,18 +32,23 @@ class Zmaptool:
         cmd = " zmap -w " + locate + "/iparea.json  -B  3M -p " + port + " -N " + num + "   -q -O json"
 
         import commandtool
-
-        returnmsg=commandtool.command(cmd=cmd)
+        returnmsg=None
+        try:
+            returnmsg=commandtool.command(cmd=cmd)
+        except Exception,e:
+            pass
         p = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
-        list= p.findall(returnmsg)
 
-        localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
-        insertdata=[]
-        jobs=[]
-        for i in list:
-            insertdata.append((str(i),port,'http'))
-        print len(insertdata)
-        self.proxytask.add_work([insertdata])
+        if returnmsg:
+            list= p.findall(returnmsg)
+
+            localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
+            insertdata=[]
+            jobs=[]
+            for i in list:
+                insertdata.append((str(i),port,'http'))
+            print len(insertdata)
+            self.proxytask.add_work([insertdata])
 
 
 

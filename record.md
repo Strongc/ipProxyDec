@@ -30,15 +30,20 @@
 
 ##四 获得代理的途径
 * 4.1 网上免费代理
+
 * 4.2 NMAP扫描出可用代理
+
 * 4.3 购买收费代理
+
 * 4.4 使用云服务器搭建代理
+如亚马逊,以及国内云服务商
+* 4.5 使用Tor+VPN混合
 
 ##五.策略
 总体策略:黑名单
 
 
-###5.1在线(暂不可行)
+###5.1在线检测(暂不细数)
 * 接受报文分析
 通过抓取数据包的方式, 如请求头(但是请求头可以被伪造),以及keep-alive 是否是长连接(因为部分廉价的代理是不会采用长连接).
 * 基于用户行为分析
@@ -46,13 +51,20 @@
 
 
 
-###5.2离线
+###5.2离线检测
 * NMAP扫描
- 通过检测ip的端口信息,如abyss,http-proxy,privoxy
+ 通过检测ip的端口信息,如abyss,http-proxy,privoxy,
+A.检测一个主机 (未知端口)耗时60s 甚至以上.
+B.在已知端口的情况下http代理要20秒,socks耗时会少一些.
+C.如果目标没有代理 ,会检测很快. 256 IP addresses (256 hosts up) scanned in 26.99 seconds
  
- nmap包含一个检测socket代理的脚本,其具体思路是访问1080以及9050端口,是否存在socket4或者socket5协议,通过该协议访问google主页,通过返回情况,来进行判断.
+ nmap包含一个检测socket代理的脚本,其具体思路是访问1080以及9050端口,是否存在socket4或者socket5协议,通过该协议访问google主页,通过返回情况,来进行判断.准确度较高
+ 
 * ZMAP配合脚本扫描
-通过端口找出开放的可能代理端口的状态,然后用脚本直接去检测
+ 通过端口找出开放的可能代理端口的状态,然后用脚本直接去检测(速度较快,准确度相对低)
+ 
+ * Tor节点
+ 对于Tor节点,识别出口(exit)节点[https://collector.torproject.org/](https://collector.torproject.org/)
 
 
 ###5.3代理库
@@ -92,6 +104,13 @@
                           'VIA', 
                           'X_FORWARDED', 
                           'X_FORWARDED_FOR'
+                          
+### nmap速度测试
+
+<pre> nmap -p 9050 -T4 -n -Pn --script socks-open-proxy 132.123.23.2/20 </pre>
+耗时:4096 IP addresses (4096 hosts up) scanned in 416.30 seconds
+
+
 
 
 

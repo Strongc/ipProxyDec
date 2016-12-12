@@ -24,8 +24,10 @@ def singleton(cls, *args, **kw):
 class Browser():
     def __init__(self):
 
-
-        self.__browser = webdriver.PhantomJS()
+        try:
+            self.__browser = webdriver.PhantomJS()
+        except Exception,e:
+            self.__browser=None
         self.__browser.implicitly_wait(10)
     def get(self,path,timewait=0):
         self.__browser.get(path)
@@ -33,14 +35,20 @@ class Browser():
 
 
     def getpage(self):
-        return self.__browser.page_source
+        if self.__browser==None:
+            return None
+        else:
+            return self.__browser.page_source
     def getcookie(self):
-        cookie = self.__browser.get_cookies()
-        li = eval(cooke)
-        cookie = ''
-        for i in li:
-            cookie = cookie + i['name'] + '=' + i['value'] + ';'
-        return cookie
+        if self.__browser==None:
+            return None
+        else:
+            cookie = self.__browser.get_cookies()
+            li = eval(cooke)
+            cookie = ''
+            for i in li:
+                cookie = cookie + i['name'] + '=' + i['value'] + ';'
+            return cookie
 
     def close(self):
         self.__browser.quit()
