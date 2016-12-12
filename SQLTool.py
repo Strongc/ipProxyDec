@@ -2,7 +2,7 @@
 #coding:utf-8
 import MySQLdb
 import config
-import time
+import time,os
 import datetime
 from MySQLdb.cursors import DictCursor
 from DBUtils.PooledDB import PooledDB
@@ -16,7 +16,8 @@ DBlog=None
 def getloghandle():
 	global DBlog
 	if DBlog is None:
-		DBlog=initLog('logs/sqltool.log', 2, True,'sqltool')
+		locate = os.path.split(os.path.realpath(__file__))[0]
+		DBlog=initLog(locate+'/logs/sqltool.log', 2, True,'sqltool')
 	return DBlog
 
 def getObject():

@@ -21,8 +21,7 @@ def getdatafromFile():
 def taskinit():
     getdatafromFile()
 def zmaptask():
-    import zmaptool
-    t=zmaptool.getObject()
-    t.do_scan()
+    from utiltool import zmaptool
+    zmaptool.action()
 if __name__ == "__main__":
     getdatafromFile()

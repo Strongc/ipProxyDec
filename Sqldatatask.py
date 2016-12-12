@@ -26,8 +26,11 @@ class SqlDataTask(TaskTool):
 		#req 格式类型 req[0] ip,req[1] port
 		# print req
 		listarray=[]
-		listarray.append(req)
-		self.sqlhelp.replaceinserttableinfo_byparams(table='proxy',select_params=['ip','port'],insert_values=listarray)
+		ip=req[0]
+		port=req[1]
+		localtime=str(time.strftime("%Y-%m-%d %X", time.localtime()))
+		listarray.append((ip,port,localtime))
+		self.sqlhelp.replaceinserttableinfo_byparams(table='proxy',select_params=['ip','port','time'],insert_values=listarray)
 		# print threadname+'数据库任务　结束'+str(datetime.datetime.now())
 
 

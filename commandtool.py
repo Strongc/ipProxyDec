@@ -7,7 +7,7 @@ import datetime
 class TimeoutError(Exception):  
     pass  
   
-def command(cmd, timeout=60):  
+def command(cmd, timeout=None):
     """Run command and return the output 
     cmd - the command to run 
     timeout - max seconds to wait for 

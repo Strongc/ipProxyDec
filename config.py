@@ -21,6 +21,13 @@ class Config(object):
 # 第七个 端口是否为图片
 # 第八个 端口图片抓取规则
 proxysource=[
+
+('http://haoip.cc/tiqu.htm','','','',r"""%s:(\d+)""",'http','0'),
+
+
+
+('http://haoip.cc/','','',r"""<td>((?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d]))""",r"""%s</td>\s+<td>(.*)</td>""",'http','0'),
+
 ('http://31f.cn/socks-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','socks5','0'),
 ('http://31f.cn/http-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','http','0'),
 ('http://31f.cn/https-proxy/','','','',r'<td>%s</td>\n<td>(\d+)</td>','https','0'),
@@ -29,7 +36,7 @@ proxysource=[
 ('http://ip.baizhongsou.com/', '', '','',r"""%s:(\d+)""",'http','0'),
 
 ('http://www.3464.com/data/Proxy/Socks5/', '', '','',r"""%s</td><td>(\d+)""" ,'socks5','0'),
-# ('http://www.mayidaili.com/free/%s','1','100','',r"""%s\r\s\t+</td>\r\s*<td>\r\s\t+<img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""",'socks5','1','document.cookie="(.*);path'),#端口为图片
+# ('http://www.mayidaili.com/free/%s','1','10','',r"""%s\r\s\t+</td>\r\s*<td>\r\s\t+<img width="80" height="20" class="js-proxy-img" data-uri="(.*)" />""",'socks5','1','document.cookie="(.*);path'),#端口为图片
 ('http://www.proxy360.cn/Region/Brazil','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),
 ('http://www.proxy360.cn/Region/China','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),
 ('http://www.proxy360.cn/Region/America','','','',r"""%s\s+</span>\s+<span class="tbBottomLine" style="width:50px;">\s+(\d+)""",'http','0'),
@@ -81,6 +88,9 @@ proxysource=[
 ('http://www.66ip.cn/areaindex_32/%s.html','1','6','',r"""%s</td><td>(\d+)""",'http','0'),
 ('http://www.66ip.cn/areaindex_33/%s.html','1','6','',r"""%s</td><td>(\d+)""",'http','0'),
 ('http://www.66ip.cn/areaindex_34/%s.html','1','1','',r"""%s</td><td>(\d+)""",'http','0'),
+
+
+
 
 
 #无法访问的网址

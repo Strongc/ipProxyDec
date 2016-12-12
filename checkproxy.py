@@ -132,7 +132,7 @@ def socket_check(potocol,ip,port):
     import socks
     socket.setdefaulttimeout(socket_timeout)
     s=None
-    s = socks.socksocket()  # Same API as socket.socket in the standard lib
+    s = socks.socksocket()
     if potocol=='socks4':
         s.set_proxy(socks.SOCKS4, ip, port)
     elif potocol=='socks5':
@@ -140,7 +140,6 @@ def socket_check(potocol,ip,port):
     else:
         s.set_proxy(socks.HTTP, ip, port)
 
-    # Can be treated identical to a regular socket object
     try:
         s.connect(("www.baidu.com", 80))
         s.sendall("GET / HTTP/1.1\r\n\r\n ")
@@ -149,7 +148,7 @@ def socket_check(potocol,ip,port):
             print 'check_socket_proxy', ip,port
             return True
         elif result.find('bfe') > 0:
-            print 'check_http', ip, port
+            print 'check_socket_proxy', ip, port
             return True
         else:
             return  False
@@ -161,14 +160,22 @@ def socket_check1(potocol,ip,port):
     import socks
     import socket
     socket.setdefaulttimeout(socket_timeout)
+    type=None
     if potocol=='socks4':
-        socks.setdefaultproxy(socks.SOCKS4, ip, port)
+        type=socks.SOCKS4
+
     elif potocol=='socks5':
-        socks.setdefaultproxy(socks.SOCKS5, ip, port)
+        type=socks.SOCKS5
+
     else:
-        socks.setdefaultproxy(socks.HTTP, ip, port)
-    # socks.setdefaultproxy(socks.PROXY_TYPE_HTTP, "5.2.74.92", 1080)
+        type=socks.HTTP
+
+    socks.setdefaultproxy(type, ip, port)
+
     socket.socket = socks.socksocket
+
+
+
     import urllib2
 
     req = urllib2.Request(ip_check_url)
@@ -193,7 +200,7 @@ def socket_check1(potocol,ip,port):
 if __name__ == '__main__':
     start_time = time.time()
     ary=[]
-    t = ('106.2.187.202', '8080', 'http',)
+    t = ('43.246.208.135', '1081', 'socks4',)
 
     ary.append(t)
 

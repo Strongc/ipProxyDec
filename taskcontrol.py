@@ -20,7 +20,7 @@ def scheduleinit():
 
     global mainschedule
     mainschedule=schedule.schedulecontrol()
-    mainschedule.addschedule(crawlermain.zmaptask, '0-7', '0-23', '*/10', '0', id='proxy_zmap')  # 定时任务器
+    # mainschedule.addschedule(crawlermain.zmaptask, '0-7', '0-23', '*/10', '0', id='proxy_zmap')  # 定时任务器
     mainschedule.addschedule(crawlermain.taskinit,'0-7','0-23','*/30','0',id='proxy_get')#定时任务器
     # mainschedule.addschedule(event=crawlermain.taskinit, type='date')#单次任务
     mainschedule.start()

@@ -62,7 +62,6 @@ class ConnectTool:
 
 
 		elif len(params)==0:
-			print 'headers',header
 			req= urllib2.Request(url,headers=header)
 
 
